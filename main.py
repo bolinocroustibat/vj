@@ -26,12 +26,12 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 
 @app.get("/")
-async def get_youtube_ids():
+async def get_youtube_id():
 	return await execute_endpoint()
 
 
 @app.get("/{theme_name}")
-async def get_youtube_ids_from_theme(theme_name: str = None):
+async def get_youtube_id_from_theme(theme_name: str = None):
 	theme = await Theme.objects.get_or_create(name=theme_name)
 	return await execute_endpoint(theme=theme)
 
@@ -42,22 +42,15 @@ async def execute_endpoint(theme: Optional[Theme] = None) -> dict:
 		videos = await Video.objects.all(theme=theme)
 	except:
 		raise HTTPException(status_code=404, detail="No videos found")
-	if len(videos) > 10:
-		selected_videos = random.sample(videos, 10)
-	else:
-		selected_videos = videos
-	response: list = []
-	for v in selected_videos:
-		response.append(
-			{
-			"id": v.id,
-			"theme": theme.name if theme else None,
-			"youtube_id": v.youtube_id,
-			"length": v.length,
-			"best_start": v.best_start
+	video = random.choice(videos)
+	print(video)
+	return {
+				"id": video.id,
+				"theme": theme.name if theme else None,
+				"youtube_id": video.youtube_id,
+				"length": video.length,
+				"best_start": video.best_start
 			}
-		)
-	return response
 
 
 async def populate_db_from_youtube(theme: Optional[Theme] = None):

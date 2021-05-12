@@ -1,6 +1,6 @@
 # Automatic Video Jockey API
 
-Provides random YouTube video IDs according to an optional given theme, and store them in a DB for later usage without depleting the YouTube API quota.
+Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
 
 ## Dependencies
 
