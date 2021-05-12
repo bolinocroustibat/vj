@@ -56,14 +56,17 @@ async def populate_db_from_youtube(theme: Optional[Theme] = None):
 	if theme:
 		search_string = f"{search_string} {theme}"
 	response_content = requests.get(YOUTUBE_SEARCH_URL, params={"key": YOUTUBE_API_KEY, "part": "snippet", "type": "video", "q": search_string}).content
-	content: dict = json.loads(response_content)
-	if len(content["items"]):
-		for v in content["items"]:
-			if theme:
-				video = Video(youtube_id=v["id"]["videoId"], theme=theme)
-			else:
-				video = Video(youtube_id=v["id"]["videoId"])
-			await video.save()
+	try:
+		content: dict = json.loads(response_content)
+		if len(content["items"]):
+			for v in content["items"]:
+				if theme:
+					video = Video(youtube_id=v["id"]["videoId"], theme=theme)
+				else:
+					video = Video(youtube_id=v["id"]["videoId"])
+				await video.save()
+	except Exception as e:
+		print(f"Error when getting YouTube response. YouTube API quota might be depleted. {str(e)}")
 
 
 async def get_random_word():
