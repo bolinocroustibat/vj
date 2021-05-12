@@ -47,9 +47,9 @@ async def execute_endpoint(theme: Optional[Theme] = None) -> dict:
 	return {
 				"id": video.id,
 				"theme": theme.name if theme else None,
-				"youtube_id": video.youtube_id,
+				"youtubeId": video.youtube_id,
 				"length": video.length,
-				"best_start": video.best_start
+				"bestStart": video.best_start
 			}
 
 
