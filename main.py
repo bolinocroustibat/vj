@@ -5,11 +5,20 @@ from typing import Optional
 
 import requests
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from models import Theme, Video
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=['GET'],
+    allow_headers=["*"],
+)
 
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
