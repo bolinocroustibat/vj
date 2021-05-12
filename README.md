@@ -4,7 +4,7 @@ Provides random YouTube video IDs according to an optional given theme, and stor
 
 ## Dependencies
 
-- Python 3.9
+- Python 3.9 (also tested with 3.7)
 - Poetry
 - FastAPI
 - Ormar ORM
@@ -30,7 +30,7 @@ Load your YouTube API v3 key in your environnement:
 export YOUTUBE_API_KEY="MY_API_KEY"
 ```
 
-Maunch the web server:
+Launch the web server:
 ```sh
 uvicorn main:app --reload
 ```
