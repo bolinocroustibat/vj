@@ -1,16 +1,13 @@
 [tool.poetry]
-name = "vj-api"
+name = "vj"
 version = "0.1.0"
 description = ""
 authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-aiosqlite = "^0.17.0"
-fastapi = "^0.65.1"
-ormar = "^0.10.6"
+python = "^3.7"
+Django = "^3.2.2"
 requests = "^2.25.1"
-uvicorn = "^0.13.4"
 
 [tool.poetry.dev-dependencies]
 

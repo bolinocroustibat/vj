@@ -1,0 +1,37 @@
+body {
+	display: block;
+	margin: 0px;
+	background-color: #111;
+	height: 100vh;
+}
+
+#player1 {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(1);
+	transition: opacity 3s;
+	opacity:1;
+}
+
+#player2 {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(1);
+	transition: opacity 3s;
+	opacity:0;
+}
+
+shader-doodle {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	opacity:0.5;
+}

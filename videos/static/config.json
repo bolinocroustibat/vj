@@ -1,0 +1,10 @@
+{
+	"changePeriod": 15,
+	"youtubeThemes": ["choreography", "pyongyang", "soviet"],
+	"videos": [
+		{"youtubeId": "TIfAkOBMf5A", "length": 221},
+		{"youtubeId": "LD1xSc7oRRk", "length": 333},
+		{"youtubeId": "YMwjdtRXCXk", "length": 212},
+		{"youtubeId": "FdLDQ_UMcjg", "length": 380}
+	]
+}
