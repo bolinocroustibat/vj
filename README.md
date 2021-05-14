@@ -4,11 +4,13 @@ Provides a random YouTube video ID according to an optional given theme, and sto
 
 ## Dependencies
 
-- Python 3.9 (also tested with 3.7)
+Python API with a SQLite database, using FastAPI framework, and deployed to Heroku.
+
+- Python 3.9 (also tested successfully with 3.7)
 - Poetry
 - FastAPI
 - Ormar ORM
-- SQlite 3 database
+- SQLite 3 database
 - A YouTube API v3 key
 
 ## Install
