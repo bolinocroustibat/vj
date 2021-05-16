@@ -14,6 +14,7 @@ class Theme(models.Model):
 class Video(models.Model):
 	theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True)
 	youtube_id = models.CharField(max_length=32, unique=True)
+	title = models.CharField(max_length=200, null=True)
 	duration = models.IntegerField(null=True)
 	best_start = models.IntegerField(null=True)
 

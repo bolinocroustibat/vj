@@ -36,6 +36,7 @@ def get_video_from_theme(request, theme_name: str):
 
 @api.get("/")
 def get_video(request):
+	populate_db_from_youtube()
 	try:
 		videos = Video.objects.all()
 		video = random.choice(videos)
@@ -61,18 +62,21 @@ def populate_db_from_youtube(theme: Optional[Theme] = None):
 				"q": search_string
 		}).content
 	content: dict = json.loads(response_content)
+	print("#1#############")
 	if content.get("error", None):
 		if content["error"].get("code", None) == 403:
 			print('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
 		else:
 			print('Error: "{}"'.format(content["error"]))
 	else:
+		print("##############")
 		try:
 			for v in content["items"]:
+				print(v)
 				if theme:
-					video = Video(youtube_id=v["id"]["videoId"], theme=theme)
+					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"], theme=theme)
 				else:
-					video = Video(youtube_id=v["id"]["videoId"])
+					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"])
 				video.save()
 		except Exception as e:
 			print(str(e))
