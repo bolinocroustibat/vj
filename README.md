@@ -1,8 +1,10 @@
 # Automatic Video Jockey API
 
 Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
+This branch is using FastAPI. There is another branch using Django and Django Ninja.
 
-## Dependencies
+
+## Main dependencies
 
 Python API with a SQLite database, using FastAPI framework, and deployed to Heroku.
 
