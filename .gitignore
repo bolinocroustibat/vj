@@ -136,8 +136,9 @@ dmypy.json
 # VS Code
 .vscode/
 
+# Direnv
 .direnv/
 .envrc
 
-debug.sh
-last_indexing_status.json
+# VJ APAI specific
+vj-api/
