@@ -53,7 +53,7 @@ async def execute_endpoint(theme: Optional[Theme] = None) -> dict:
 			}
 
 
-async def populate_db_from_youtube(theme: Optional[Theme] = None):
+async def populate_db_from_youtube(theme: Optional[Theme] = None) -> None:
 	search_string: str = await get_random_word()
 	if theme:
 		search_string = f"{search_string} {theme}"
@@ -71,6 +71,6 @@ async def populate_db_from_youtube(theme: Optional[Theme] = None):
 		print(f"Error when getting YouTube response. YouTube API quota might be depleted. {str(e)}")
 
 
-async def get_random_word():
+async def get_random_word() -> str:
 	lines = open('dict_EN.txt').read().splitlines()
 	return random.choice(lines)
