@@ -6,30 +6,48 @@ from typing import Optional
 import requests
 from django.shortcuts import render
 from django.http import Http404
+from ninja import NinjaAPI
 
-from .models import Theme, Video
+from videos.models import Theme, Video
 
+
+api = NinjaAPI()
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 
-def index(request, theme_name: str):
+@api.get("/{theme_name}")
+def get_video_from_theme(request, theme_name: str):
 	theme, created = Theme.objects.get_or_create(name=theme_name)
 	populate_db_from_youtube(theme=theme)
+	try:
+		videos = Video.objects.filter(theme=theme)
+		video = random.choice(videos)
+	except:
+		raise Http404
+	return {
+			"theme": theme.name,
+			"youtubeId": video.youtube_id,
+			"videoDuration": video.duration,
+			"bestStart": video.best_start,
+		}
+
+
+@api.get("/")
+def get_video(request):
 	try:
 		videos = Video.objects.all()
 		video = random.choice(videos)
 	except:
 		raise Http404
-	return render(
-		request,'index.html', {
+	return {
+			"theme": None,
 			"youtubeId": video.youtube_id,
-			"videoDuration": video.length,
+			"videoDuration": video.duration,
 			"bestStart": video.best_start,
-			"changePeriod": 15,
 		}
-	)
+
 
 def populate_db_from_youtube(theme: Optional[Theme] = None):
 	search_string: str = get_random_word()
@@ -56,5 +74,5 @@ def populate_db_from_youtube(theme: Optional[Theme] = None):
 
 
 def get_random_word():
-	lines = open('dict_EN.txt').read().splitlines()
+	lines = open('vj-api/dict_EN.txt').read().splitlines()
 	return random.choice(lines)

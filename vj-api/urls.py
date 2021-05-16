@@ -1,4 +1,4 @@
-"""VJ URL Configuration
+"""vj-api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
 	https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -14,9 +14,12 @@ Including another URLconf
 	2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import path
+
+from videos.api import api
+
 
 urlpatterns = [
-	path('admin/', admin.site.urls),
-	re_path(r'^', include('videos.urls')),
+	path("admin/", admin.site.urls),
+	path("videos/", api.urls),
 ]

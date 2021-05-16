@@ -6,8 +6,9 @@ authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Django = "^3.2.2"
+Django = "^3.2.3"
 requests = "^2.25.1"
+django-ninja = "^0.12.3"
 
 [tool.poetry.dev-dependencies]
 
