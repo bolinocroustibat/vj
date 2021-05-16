@@ -60,17 +60,23 @@ def populate_db_from_youtube(theme: Optional[Theme] = None):
 				"type": "video",
 				"q": search_string
 		}).content
-	try:
-		content: dict = json.loads(response_content)
-		if len(content["items"]):
+	content: dict = json.loads(response_content)
+	if content.get("error", None):
+		if content["error"].get("code", None) == 403:
+			print('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+		else:
+			print('Error: "{}"'.format(content["error"]))
+	else:
+		try:
 			for v in content["items"]:
 				if theme:
 					video = Video(youtube_id=v["id"]["videoId"], theme=theme)
 				else:
 					video = Video(youtube_id=v["id"]["videoId"])
 				video.save()
-	except Exception as e:
-		print(f"Error when getting YouTube response. YouTube API quota might be depleted. {str(e)}")
+		except Exception as e:
+			print(str(e))
+
 
 
 def get_random_word():
