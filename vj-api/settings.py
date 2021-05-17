@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jy9kzd*brq*5ft-+_l(bu95$1!r(4&@rqfw@q2qc#)ae+y8tdp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["vj-api.herokuapp.com", "adriencarpentier.com"]
 
 
 CORS_ORIGIN_WHITELIST = (
