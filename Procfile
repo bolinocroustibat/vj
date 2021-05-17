@@ -1,1 +1,1 @@
-web: gunicorn vj-api.wsgi
+web: gunicorn vj_api.wsgi
