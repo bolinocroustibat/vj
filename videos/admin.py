@@ -1,11 +1,17 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.contrib.auth.models import Group
 
 from .models import Theme, Video
+
+
+admin.site.unregister(Group)
+
 
 @admin.register(Theme)
 class ThemeAdmin(admin.ModelAdmin):
 	list_display = ('pk', 'name')
+
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
