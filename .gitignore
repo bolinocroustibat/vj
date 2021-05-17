@@ -142,3 +142,4 @@ dmypy.json
 debug.sh
 last_indexing_status.json
 static/
+staticfiles/
