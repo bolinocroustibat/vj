@@ -10,7 +10,9 @@ admin.site.unregister(Group)
 
 @admin.register(Theme)
 class ThemeAdmin(admin.ModelAdmin):
-	list_display = ('pk', 'name')
+	list_display = ('pk', 'name', 'active')
+	list_filter = ('active',)
+	search_fields = ('name',)
 
 
 @admin.register(Video)
@@ -18,6 +20,7 @@ class VideoAdmin(admin.ModelAdmin):
 	list_display = ('pk', 'title', 'get_link_tag', 'get_theme_name', 'duration', 'get_image_tag')
 	# list_display_links = ('get_link_tag',)
 	list_filter = ('theme',)
+	search_fields = ('title', 'get_theme_name',)
 
 	def get_theme_name(self, obj):
 		if obj.theme:
