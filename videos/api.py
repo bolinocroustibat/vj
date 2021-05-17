@@ -9,7 +9,7 @@ from django.http import Http404
 from ninja import NinjaAPI
 
 from videos.models import Theme, Video
-
+from vj_api .settings import logger
 
 api = NinjaAPI()
 
@@ -62,27 +62,25 @@ def populate_db_from_youtube(theme: Optional[Theme] = None):
 				"q": search_string
 		}).content
 	content: dict = json.loads(response_content)
-	print("#1#############")
 	if content.get("error", None):
 		if content["error"].get("code", None) == 403:
-			print('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+			logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
 		else:
-			print('Error: "{}"'.format(content["error"]))
+			logger.error('Error: "{}"'.format(content["error"]))
 	else:
-		print("##############")
 		try:
 			for v in content["items"]:
-				print(v)
 				if theme:
 					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"], theme=theme)
 				else:
 					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"])
 				video.save()
+				logger.info(f'Saved a new video ID "{video.title}" in DB')
 		except Exception as e:
-			print(str(e))
+			logger.error(str(e))
 
 
 
 def get_random_word():
-	lines = open('vj-api/dict_EN.txt').read().splitlines()
+	lines = open('vj_api/dict_EN.txt').read().splitlines()
 	return random.choice(lines)

@@ -12,6 +12,7 @@ django-cors-headers = "^3.7.0"
 gunicorn = "^20.1.0"
 requests = "^2.25.1"
 whitenoise = "^5.2.0"
+colorlog = "^5.0.1"
 
 [tool.poetry.dev-dependencies]
 
