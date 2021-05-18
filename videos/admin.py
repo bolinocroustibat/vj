@@ -39,6 +39,6 @@ class VideoAdmin(admin.ModelAdmin):
 
 	def get_image_tag(self, obj):
 		if obj.thumbnail:
-			return format_html(f"<img src='{obj.thumbnail}' width='20%' />")
+			return format_html(f"<img src='{obj.thumbnail}' width='25%' />")
 		return None
 	get_image_tag.short_description = 'thumbnail'

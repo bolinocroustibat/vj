@@ -95,7 +95,7 @@ def update_video_duration_from_youtube(videos: List[Video]) -> None:
 def populate_db_from_youtube(theme: Optional[Theme] = None):
 	search_string: str = get_random_word()
 	if theme:
-		search_string = f"{search_string} {theme.name}"
+		search_string = f"{theme.name} {search_string}"
 	response_content = requests.get(
 		YOUTUBE_SEARCH_URL,
 		params={"key": YOUTUBE_API_KEY,
