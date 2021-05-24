@@ -38,3 +38,8 @@ Launch the Django web server:
 ```sh
 ./manage.py runserver
 ```
+
+## To download the local DB from Heroku
+```sh
+heroku ps:copy vj_api/videos.sqlite3 --app=vj-api --output=vj_api/videos.sqlite3
+```

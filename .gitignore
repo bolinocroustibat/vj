@@ -139,7 +139,5 @@ dmypy.json
 .direnv/
 .envrc
 
-debug.sh
-last_indexing_status.json
 static/
 staticfiles/
