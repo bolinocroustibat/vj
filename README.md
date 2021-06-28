@@ -4,6 +4,7 @@ Provides a random YouTube video ID according to an optional given theme, and sto
 
 This branch is using Django and Django Ninja. There is [another branch using FastAPI](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
 
+
 ## Main dependencies
 
 Python API with a SQLite database, using Django framework, and deployed to Heroku.
@@ -14,6 +15,7 @@ Python API with a SQLite database, using Django framework, and deployed to Herok
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
 - SQLite 3 database
 - A YouTube API v3 key
+
 
 ## Install
 
