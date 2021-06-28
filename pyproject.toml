@@ -6,13 +6,14 @@ authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+colorlog = "^5.0.1"
 Django = "^3.2.3"
 django-ninja = "^0.12.3"
 django-cors-headers = "^3.7.0"
 gunicorn = "^20.1.0"
 requests = "^2.25.1"
+uvicorn = "^0.14.0"
 whitenoise = "^5.2.0"
-colorlog = "^5.0.1"
 
 [tool.poetry.dev-dependencies]
 
