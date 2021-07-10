@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-jy9kzd*brq*5ft-+_l(bu95$1!r(4&@rqfw@q2qc#)ae+y8tdp
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    "110.vm.arancloud.com",
 	"vj-api.herokuapp.com",
 	"adriencarpentier.com",
 	"127.0.0.1",
