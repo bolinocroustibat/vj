@@ -2,7 +2,7 @@
 
 Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
 
-This branch is using Django and Django Ninja. There is [another branch using FastAPI](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
+This branch is using Django and Django Ninja. There is [another branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
 
 
 ## Main dependencies
@@ -31,9 +31,9 @@ Activate the virtual environement:
 poetry shell
 ```
 
-Load your YouTube API v3 key in your environnement:
+Put your YouTube API v3 key in your local_settings.py:
 ```sh
-export YOUTUBE_API_KEY="MY_API_KEY"
+YOUTUBE_API_KEY="MY_API_KEY"
 ```
 
 Launch the Django web server:
