@@ -2,7 +2,7 @@
 
 Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
 
-This branch is using FastAPI. There is [another branch using Django and Django Ninja](https://github.com/bolinocroustibat/vj-api/tree/django).
+This branch is using FastAPI and SQlite. There is [another branch using Django, Django Ninja and MySQL](https://github.com/bolinocroustibat/vj-api/tree/main).
 
 ## Main dependencies
 
