@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-jy9kzd*brq*5ft-+_l(bu95$1!r(4&@rqfw@q2qc#)ae+y8tdp
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "110.vm.arancloud.com",
+	"110.vm.arancloud.com",
 	"vj-api.herokuapp.com",
 	"adriencarpentier.com",
 	"127.0.0.1",
@@ -92,10 +92,15 @@ WSGI_APPLICATION = 'vj_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# MySQL
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': BASE_DIR + '/vj_api/videos.sqlite3',
+	"default": {
+		"ENGINE": "django.db.backends.mysql",
+		"NAME": "vj-api",
+		"USER": "root",
+		"PASSWORD": "root",
+		"HOST": "localhost",  # Or an IP Address that your DB is hosted on. DO NOT USE "127.0.0.1" but "localhost"
+		"PORT": "8889",
 	}
 }
 

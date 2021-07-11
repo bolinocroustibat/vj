@@ -13,7 +13,7 @@ Python API with a SQLite database, using Django framework, and deployed to Herok
 - [Poetry](https://python-poetry.org/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
-- SQLite 3 database
+- A MySQL or MariaDB database
 - A YouTube API v3 key
 
 
@@ -49,13 +49,12 @@ gunicorn vj_api.asgi:application -k uvicorn.workers.UvicornWorker
 ```
 
 For production, the number of workers `-w` should be adjusted based on the number of CPU cores.
-For example, here with 20 cores, and adding a log file:
+For example, here with 20 cores, on port 8002 and adding a log file:
 ```sh
-gunicorn vj_api.asgi:application -w 40 -k uvicorn.workers.UvicornWorker --log-file -
+gunicorn vj_api.asgi:application -w 40 -k uvicorn.workers.UvicornWorker --bind "0.0.0.0:8002"
 ```
 
-
-## To download the local DB from Heroku
+To debug:
 ```sh
-heroku ps:copy vj_api/videos.sqlite3 --app=vj-api --output=vj_api/videos.sqlite3
+gunicorn vj_api.asgi:application -k uvicorn.workers.UvicornWorker --bind "0.0.0.0:8002" --log-level debug
 ```
