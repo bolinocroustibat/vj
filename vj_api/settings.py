@@ -21,25 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jy9kzd*brq*5ft-+_l(bu95$1!r(4&@rqfw@q2qc#)ae+y8tdp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
-ALLOWED_HOSTS = [
-	"110.vm.arancloud.com",
-	"vj-api.herokuapp.com",
-	"adriencarpentier.com",
-	"127.0.0.1",
-	"localhost",
-]
-
-
-CORS_ORIGIN_WHITELIST = (
-	'https://adriencarpentier.com',
-	'http://localhost:8080',
-)
 
 
 # Application definition
@@ -88,21 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vj_api.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# MySQL
-DATABASES = {
-	"default": {
-		"ENGINE": "django.db.backends.mysql",
-		"NAME": "vj-api",
-		"USER": "root",
-		"PASSWORD": "root",
-		"HOST": "localhost",  # Or an IP Address that your DB is hosted on. DO NOT USE "127.0.0.1" but "localhost"
-		"PORT": "8889",
-	}
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -160,3 +129,12 @@ handler.setFormatter(colorlog.ColoredFormatter(
 
 logger = colorlog.getLogger()
 logger.addHandler(handler)
+
+
+# Local settings
+try:
+	from .local_settings import *
+except Exception as e:
+	print(e)
+	print("Note: local_settings.py not present or invalid. Using default settings.")
+	LOGGING_LEVEL = "DEBUG"
