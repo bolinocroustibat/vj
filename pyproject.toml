@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "vj"
+name = "vj-api"
 version = "0.1.0"
-description = ""
+description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 
 [tool.poetry.dependencies]
