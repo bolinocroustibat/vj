@@ -41,8 +41,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 	'corsheaders.middleware.CorsMiddleware',
-	'whitenoise.middleware.WhiteNoiseMiddleware', # https://devcenter.heroku.com/articles/django-assets
-	'django.middleware.common.CommonMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
@@ -107,10 +105,9 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-# Heroku config: https://devcenter.heroku.com/articles/django-assets
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# http://whitenoise.evans.io/en/stable/django.html
+# where the static files will go when doing a collectstatic if debug=false
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 
@@ -129,7 +126,6 @@ handler.setFormatter(colorlog.ColoredFormatter(
 
 logger = colorlog.getLogger()
 logger.addHandler(handler)
-
 
 # Local settings
 try:
