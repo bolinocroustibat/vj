@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "vj-api"
-version = "0.1.0"
+version = "0.1.1"
 description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "3.9.*"
 colorlog = "^5.0.1"
 Django = "^3.2.3"
 django-ninja = "^0.12.3"

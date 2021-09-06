@@ -9,7 +9,7 @@ This branch is using Django and Django Ninja. There is [another branch using Fas
 
 Python API with a SQLite database, using Django framework, and deployed to Heroku.
 
-- Python 3.7 (also tested successfully with 3.9)
+- Python 3.9
 - [Poetry](https://python-poetry.org/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
