@@ -1,20 +1,22 @@
 import json
-import os
 import random
 from typing import List, Optional
 
 import requests
-from django.shortcuts import render
 from django.http import Http404
 from ninja import NinjaAPI
 
 from videos.models import Theme, Video
-from vj_api .settings import logger, YOUTUBE_API_KEY
+from vj_api.settings import logger, YOUTUBE_API_KEY
 
 api = NinjaAPI()
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_DOCS_URL = "https://www.googleapis.com/youtube/v3/videos"
+DICTIONNARIES: dict = {
+	"en": "vj_api/dict_EN.txt",
+	"jp": "vj_api/44492-japanese-words-latin-lines-removed.txt",
+}
 
 
 @api.get("/{theme_name}")
@@ -28,11 +30,11 @@ def get_video_from_theme(request, theme_name: str):
 		raise Http404
 	update_video_duration_from_youtube(videos=videos)
 	return {
-			"theme": theme.name,
-			"youtubeId": video.youtube_id,
-			"videoDuration": video.duration,
-			"bestStart": video.best_start,
-		}
+		"theme": theme.name,
+		"youtubeId": video.youtube_id,
+		"videoDuration": video.duration,
+		"bestStart": video.best_start,
+	}
 
 
 @api.get("/")
@@ -45,27 +47,31 @@ def get_video(request):
 		raise Http404
 	update_video_duration_from_youtube(videos=videos)
 	return {
-			"theme": None,
-			"youtubeId": video.youtube_id,
-			"videoDuration": video.duration,
-			"bestStart": video.best_start,
-		}
+		"theme": None,
+		"youtubeId": video.youtube_id,
+		"videoDuration": video.duration,
+		"bestStart": video.best_start,
+	}
 
 
 def update_video_duration_from_youtube(videos: List[Video]) -> None:
 	youtube_ids: list = [v.youtube_id for v in videos if not v.duration][:49]
 	response_content = requests.get(
 		YOUTUBE_DOCS_URL,
-		params={"key": YOUTUBE_API_KEY,
-				"part": "contentDetails",
-				"type": "video",
-				"id": ",".join(youtube_ids)
-		}).content
+		params={
+			"key": YOUTUBE_API_KEY,
+			"part": "contentDetails",
+			"type": "video",
+			"id": ",".join(youtube_ids),
+		},
+	).content
 
 	content: dict = json.loads(response_content)
 	if content.get("error", None):
 		if content["error"].get("code", None) == 403:
-			logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+			logger.error(
+				'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
+			)
 		else:
 			logger.error('Error: "{}"'.format(content["error"]))
 	else:
@@ -74,54 +80,68 @@ def update_video_duration_from_youtube(videos: List[Video]) -> None:
 				duration_yt: str = v["contentDetails"]["duration"][2:]
 				hours = 0
 				if "H" in duration_yt:
-					hours = int(duration_yt.split('H')[0])
-					duration_yt = duration_yt.split('H')[1]
+					hours = int(duration_yt.split("H")[0])
+					duration_yt = duration_yt.split("H")[1]
 				minutes = 0
 				if "M" in duration_yt:
-					minutes = int(duration_yt.split('M')[0])
-					duration_yt = duration_yt.split('M')[1]
+					minutes = int(duration_yt.split("M")[0])
+					duration_yt = duration_yt.split("M")[1]
 				seconds = 0
 				if "S" in duration_yt:
-					seconds = int(duration_yt.split('S')[0])
-				duration: int = hours*3600 + minutes*60 + seconds
+					seconds = int(duration_yt.split("S")[0])
+				duration: int = hours * 3600 + minutes * 60 + seconds
 				video = Video.objects.get(youtube_id=v["id"])
-				video.duration=duration
+				video.duration = duration
 				video.save()
 			except Exception as e:
 				logger.error(str(e))
 
 
-def populate_db_from_youtube(theme: Optional[Theme] = None):
+def populate_db_from_youtube(theme: Optional[Theme] = None) -> None:
 	search_string: str = get_random_word()
 	if theme:
 		search_string = f"{theme.name} {search_string}"
 	response_content = requests.get(
 		YOUTUBE_SEARCH_URL,
-		params={"key": YOUTUBE_API_KEY,
-				"part": "snippet",
-				"type": "video",
-				"q": search_string
-		}).content
+		params={
+			"key": YOUTUBE_API_KEY,
+			"part": "snippet",
+			"type": "video",
+			"q": search_string,
+		},
+	).content
 	content: dict = json.loads(response_content)
 	if content.get("error", None):
 		if content["error"].get("code", None) == 403:
-			logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+			logger.error(
+				'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
+			)
 		else:
 			logger.error('Error: "{}"'.format(content["error"]))
 	else:
 		try:
 			for v in content["items"]:
 				if theme:
-					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"], thumbnail=v["snippet"]["thumbnails"]["high"]["url"], theme=theme)
+					video = Video(
+						youtube_id=v["id"]["videoId"],
+						title=v["snippet"]["title"],
+						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
+						theme=theme,
+					)
 				else:
-					video = Video(youtube_id=v["id"]["videoId"], title=v["snippet"]["title"], thumbnail=v["snippet"]["thumbnails"]["high"]["url"])
+					video = Video(
+						youtube_id=v["id"]["videoId"],
+						title=v["snippet"]["title"],
+						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
+					)
 				video.save()
 				logger.info(f'Saved a new video ID "{video.title}" in DB')
 		except Exception as e:
 			logger.error(str(e))
 
 
-
-def get_random_word():
-	lines = open('vj_api/dict_EN.txt').read().splitlines()
+def get_random_word(lang: str = None) -> Optional[str]:
+	if not lang:
+		lang: str = random.choice(list(DICTIONNARIES.keys()))
+	lines = open(DICTIONNARIES[lang]).read().splitlines()
 	return random.choice(lines)
