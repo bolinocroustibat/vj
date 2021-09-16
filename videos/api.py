@@ -136,12 +136,14 @@ def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Vide
 						title=v["snippet"]["title"],
 						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
 						theme=theme,
+						search_string=search_string,
 					)
 				else:
 					video = Video(
 						youtube_id=v["id"]["videoId"],
 						title=v["snippet"]["title"],
 						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
+						search_string=search_string,
 					)
 				videos.append(video)
 				logger.info(f'Geo a new video ID "{video.title}" from YouTube')
