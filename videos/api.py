@@ -14,8 +14,9 @@ api = NinjaAPI()
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_DOCS_URL = "https://www.googleapis.com/youtube/v3/videos"
 DICTIONNARIES: dict = {
-	"en": "vj_api/dict_EN.txt",
-	"jp": "vj_api/44492-japanese-words-latin-lines-removed.txt",
+	"en": "vj_api/dictionaries/dict_EN.txt",
+	"fr": "vj_api/dictionaries/dictionary_FR.txt",
+	"jp": "vj_api/dictionaries/44492-japanese-words-latin-lines-removed.txt",
 }
 
 
