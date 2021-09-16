@@ -22,13 +22,17 @@ DICTIONNARIES: dict = {
 @api.get("/{theme_name}")
 def get_video_from_theme(request, theme_name: str):
 	theme, created = Theme.objects.get_or_create(name=theme_name)
-	populate_db_from_youtube(theme=theme)
-	try:
-		videos = Video.objects.filter(theme=theme)
+	videos: Optional[list[Video]] = get_videos_from_youtube(theme=theme)
+	if videos and len(videos):
+		populate_db(videos)
+		update_video_duration_from_youtube(videos=videos)
 		video = random.choice(videos)
-	except:
-		raise Http404
-	update_video_duration_from_youtube(videos=videos)
+	else:
+		try:
+			videos = Video.objects.all()
+			video = random.choice(videos)
+		except:
+			raise Http404
 	return {
 		"theme": theme.name,
 		"youtubeId": video.youtube_id,
@@ -39,13 +43,17 @@ def get_video_from_theme(request, theme_name: str):
 
 @api.get("/")
 def get_video(request):
-	populate_db_from_youtube()
-	try:
-		videos = Video.objects.all()
+	videos: Optional[list[Video]] = get_videos_from_youtube()
+	if videos and len(videos):
+		populate_db(videos)
+		update_video_duration_from_youtube(videos=videos)
 		video = random.choice(videos)
-	except:
-		raise Http404
-	update_video_duration_from_youtube(videos=videos)
+	else:
+		try:
+			videos = Video.objects.all()
+			video = random.choice(videos)
+		except:
+			raise Http404
 	return {
 		"theme": None,
 		"youtubeId": video.youtube_id,
@@ -97,7 +105,7 @@ def update_video_duration_from_youtube(videos: List[Video]) -> None:
 				logger.error(str(e))
 
 
-def populate_db_from_youtube(theme: Optional[Theme] = None) -> None:
+def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Video]]:
 	search_string: str = get_random_word()
 	if theme:
 		search_string = f"{theme.name} {search_string}"
@@ -119,8 +127,9 @@ def populate_db_from_youtube(theme: Optional[Theme] = None) -> None:
 		else:
 			logger.error('Error: "{}"'.format(content["error"]))
 	else:
-		try:
-			for v in content["items"]:
+		videos: list = []
+		for v in content["items"]:
+			try:
 				if theme:
 					video = Video(
 						youtube_id=v["id"]["videoId"],
@@ -134,13 +143,23 @@ def populate_db_from_youtube(theme: Optional[Theme] = None) -> None:
 						title=v["snippet"]["title"],
 						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
 					)
-				video.save()
-				logger.info(f'Saved a new video ID "{video.title}" in DB')
+				videos.append(video)
+				logger.info(f'Geo a new video ID "{video.title}" from YouTube')
+			except Exception as e:
+				logger.error(str(e))
+		return videos
+
+
+def populate_db(videos: list[Video]) -> None:
+	for v in videos:
+		try:
+			v.save()
+			logger.info(f'Saved a new video ID "{v.title}" in DB')
 		except Exception as e:
 			logger.error(str(e))
 
 
-def get_random_word(lang: str = None) -> Optional[str]:
+def get_random_word(lang: str = None) -> str:
 	if not lang:
 		lang: str = random.choice(list(DICTIONNARIES.keys()))
 	lines = open(DICTIONNARIES[lang]).read().splitlines()
