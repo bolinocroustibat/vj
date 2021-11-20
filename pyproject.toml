@@ -1,3 +1,25 @@
+[project]
+name = "vj-api"
+version = "0.1.4"
+description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
+authors = [{ name = "Adrien Carpentier", email = "moi@adriencarpentier.com" }]
+dependencies = [
+    "colorlog<6.0.0,>=5.0.1",
+    "Django<4.0.0,>=3.2.3",
+    "django-ninja<1.0.0,>=0.12.3",
+    "django-cors-headers<4.0.0,>=3.7.0",
+    "gunicorn<21.0.0,>=20.1.0",
+    "PyMySQL<2.0.0,>=1.0.2",
+    "requests<3.0.0,>=2.25.1",
+    "uvicorn<1.0.0,>=0.14.0",
+]
+requires-python = ">=3.9,<3.10"
+dynamic = ["classifiers", "classifiers"]
+license = { text = "MIT" }
+
+[project.urls]
+homepage = ""
+
 [tool.poetry]
 name = "vj-api"
 version = "0.1.4"
@@ -17,6 +39,10 @@ uvicorn = "^0.14.0"
 
 [tool.poetry.dev-dependencies]
 
+[tool.pdm]
+includes = []
+[tool.pdm.dev-dependencies]
+dev = []
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"

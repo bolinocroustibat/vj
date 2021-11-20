@@ -1,1 +1,0 @@
-web: gunicorn vj_api.wsgi
