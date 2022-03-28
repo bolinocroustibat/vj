@@ -20,6 +20,10 @@ license = { text = "MIT" }
 [project.urls]
 homepage = ""
 
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "vj-api"
 version = "0.1.4"
@@ -41,8 +45,6 @@ uvicorn = "^0.14.0"
 
 [tool.pdm]
 includes = []
+
 [tool.pdm.dev-dependencies]
 dev = []
-[build-system]
-requires = ["pdm-pep517"]
-build-backend = "pdm.pep517.api"
