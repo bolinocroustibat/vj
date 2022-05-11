@@ -1,6 +1,6 @@
 import json
 import random
-from typing import List, Optional
+from typing import Optional
 
 import requests
 from django.http import Http404
@@ -63,7 +63,7 @@ def get_video(request):
 	}
 
 
-def update_video_duration_from_youtube(videos: List[Video]) -> None:
+def update_video_duration_from_youtube(videos: list[Video]) -> None:
 	youtube_ids: list = [v.youtube_id for v in videos if not v.duration][:49]
 	response_content = requests.get(
 		YOUTUBE_DOCS_URL,
