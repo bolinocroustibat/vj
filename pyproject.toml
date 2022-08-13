@@ -33,7 +33,7 @@ authors = ["Adrien Carpentier <moi@adriencarpentier.com>"]
 [tool.poetry.dependencies]
 python = "3.9.*"
 colorlog = "^5.0.1"
-Django = "^3.2.13"
+Django = "^3.2.15"
 django-ninja = "^0.12.3"
 django-cors-headers = "^3.7.0"
 gunicorn = "^20.1.0"
