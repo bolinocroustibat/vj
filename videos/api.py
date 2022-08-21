@@ -155,7 +155,7 @@ def populate_db(videos: list[Video]) -> None:
 			logger.error(str(e))
 
 
-def get_random_word(lang: str = None) -> str:
+def get_random_word(lang: Optional[str] = None) -> str:
 	if not lang:
 		lang: str = random.choice(list(DICTIONNARIES.keys()))
 	lines = open(DICTIONNARIES[lang]).read().splitlines()
