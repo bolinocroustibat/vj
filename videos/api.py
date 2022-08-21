@@ -20,9 +20,18 @@ DICTIONNARIES: dict = {
 }
 
 
+@api.get("/")
+def get_video(request):
+    return return_random_video_info(theme=None)
+
+
 @api.get("/{theme_name}")
 def get_video_from_theme(request, theme_name: str):
     theme, created = Theme.objects.get_or_create(name=theme_name)
+    return return_random_video_info(theme=theme)
+
+
+def return_random_video_info(theme: Optional[Theme] = None) -> dict:
     videos: Optional[list[Video]] = get_videos_from_youtube(theme=theme)
     if videos and len(videos):
         populate_db(videos)
@@ -35,29 +44,7 @@ def get_video_from_theme(request, theme_name: str):
         except:
             raise Http404
     return {
-        "theme": theme.name,
-        "youtubeId": video.youtube_id,
-        "url": f"https://www.youtube.com/watch?v={video.youtube_id}",
-        "videoDuration": video.duration,
-        "bestStart": video.best_start,
-    }
-
-
-@api.get("/")
-def get_video(request):
-    videos: Optional[list[Video]] = get_videos_from_youtube()
-    if videos and len(videos):
-        populate_db(videos)
-        videos = update_videos_duration_from_youtube(videos=videos)
-        video = random.choice(videos)
-    else:
-        try:
-            videos = Video.objects.all()
-            video = random.choice(videos)
-        except:
-            raise Http404
-    return {
-        "theme": None,
+        "theme": theme.name if theme else None,
         "youtubeId": video.youtube_id,
         "url": f"https://www.youtube.com/watch?v={video.youtube_id}",
         "videoDuration": video.duration,
