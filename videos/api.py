@@ -37,6 +37,7 @@ def get_video_from_theme(request, theme_name: str):
     return {
         "theme": theme.name,
         "youtubeId": video.youtube_id,
+        "url": f"https://www.youtube.com/watch?v={video.youtube_id}",
         "videoDuration": video.duration,
         "bestStart": video.best_start,
     }
@@ -58,6 +59,7 @@ def get_video(request):
     return {
         "theme": None,
         "youtubeId": video.youtube_id,
+        "url": f"https://www.youtube.com/watch?v={video.youtube_id}",
         "videoDuration": video.duration,
         "bestStart": video.best_start,
     }
