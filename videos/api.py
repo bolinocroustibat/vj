@@ -131,21 +131,14 @@ def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Vide
 		videos: list = []
 		for v in content["items"]:
 			try:
+				video = Video(
+					youtube_id=v["id"]["videoId"],
+					title=v["snippet"]["title"],
+					thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
+					search_string=search_string,
+				)
 				if theme:
-					video = Video(
-						youtube_id=v["id"]["videoId"],
-						title=v["snippet"]["title"],
-						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
-						theme=theme,
-						search_string=search_string,
-					)
-				else:
-					video = Video(
-						youtube_id=v["id"]["videoId"],
-						title=v["snippet"]["title"],
-						thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
-						search_string=search_string,
-					)
+					video.theme = theme
 				videos.append(video)
 				logger.info(f'Geo a new video ID "{video.title}" from YouTube')
 			except Exception as e:
