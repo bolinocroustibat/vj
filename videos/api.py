@@ -9,6 +9,7 @@ from ninja import NinjaAPI
 from videos.models import Theme, Video
 from vj_api.settings import logger, YOUTUBE_API_KEY
 
+
 api = NinjaAPI()
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"

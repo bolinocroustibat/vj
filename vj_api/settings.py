@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-from pathlib import Path
+
+import sentry_sdk
+import toml
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,3 +137,23 @@ except Exception as e:
 	print(e)
 	print("Note: local_settings.py not present or invalid. Using default settings.")
 	LOGGING_LEVEL = "DEBUG"
+
+pyproject: dict = toml.load("pyproject.toml")
+APP_NAME: str = pyproject["tool"]["poetry"]["name"]
+VERSION: str = pyproject["tool"]["poetry"]["version"]
+sentry_sdk.init(
+	dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
+	integrations=[
+		DjangoIntegration(),
+	],
+	release=f"{APP_NAME}@{VERSION}",
+
+	# Set traces_sample_rate to 1.0 to capture 100%
+	# of transactions for performance monitoring.
+	# We recommend adjusting this value in production.
+	traces_sample_rate=1.0,
+
+	# If you wish to associate users to errors (assuming you are using
+	# django.contrib.auth) you may enable sending PII data.
+	send_default_pii=True
+)
