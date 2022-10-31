@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import tomllib
 
 import sentry_sdk
-import toml
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -138,7 +138,8 @@ except Exception as e:
 	logger.error("Note: local_settings.py not present or invalid. Using default settings.")
 	LOGGING_LEVEL = "DEBUG"
 
-pyproject: dict = toml.load("pyproject.toml")
+with open("pyproject.toml", "rb") as f:
+	pyproject: dict = tomllib.load(f)
 APP_NAME: str = pyproject["tool"]["poetry"]["name"]
 DESCRIPTION: str = pyproject["tool"]["poetry"]["description"]
 VERSION: str = pyproject["tool"]["poetry"]["version"]

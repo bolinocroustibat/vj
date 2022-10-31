@@ -9,7 +9,7 @@ This branch is using Django, Django Ninja and MySQL/MariaDB. There is [another b
 
 Python API with a MySQL database using Django framework.
 
-- Python 3.9
+- Python 3.11
 - A modern Python package manager like [Poetry](https://python-poetry.org/) or [PDM](https://pdm.fming.dev/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
