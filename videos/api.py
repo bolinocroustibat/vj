@@ -3,6 +3,7 @@ import random
 from typing import Optional
 
 import requests
+from django.db import IntegrityError
 from django.http import Http404
 from ninja import NinjaAPI
 
@@ -133,7 +134,7 @@ def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Vide
                 if theme:
                     video.theme = theme
                 videos.append(video)
-                logger.info(f'Geo a new video ID "{video.title}" from YouTube')
+                logger.info(f'Got a new video ID "{video.title}" from YouTube')
             except Exception as e:
                 logger.error(str(e))
         return videos
@@ -144,6 +145,8 @@ def populate_db(videos: list[Video]) -> None:
         try:
             v.save()
             logger.info(f'Saved a new video ID "{v.title}" in DB')
+        except IntegrityError as e:
+            logger.info(f'Video "{v.title}" already in DB: {str(e)}')
         except Exception as e:
             logger.error(str(e))
 
