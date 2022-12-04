@@ -134,8 +134,8 @@ logger.addHandler(handler)
 try:
 	from .local_settings import *
 except Exception as e:
-	print(e)
-	print("Note: local_settings.py not present or invalid. Using default settings.")
+	logger.error(e)
+	logger.error("Note: local_settings.py not present or invalid. Using default settings.")
 	LOGGING_LEVEL = "DEBUG"
 
 pyproject: dict = toml.load("pyproject.toml")
