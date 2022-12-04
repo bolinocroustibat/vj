@@ -43,9 +43,9 @@ Launch the Django web server:
 
 ## Endpoints
 
-Only one endpoint:
 - `/videos/`: Returns a random YouTube ID
 - `/videos/{theme_name}`: Returns a random YouTube ID for the given theme
+- `/videos/docs`: Swagger documentatino and version
 
 
 ## Admin
