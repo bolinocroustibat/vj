@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from ninja import NinjaAPI
 
-from videos.api import api
+from videos.api import router as videos_router
+from vj_api.settings import APP_NAME, DESCRIPTION, VERSION
 
+api = NinjaAPI(title=APP_NAME, description=DESCRIPTION, version=VERSION)
+api.add_router("/videos/", videos_router)
 
 urlpatterns = [
-	path("admin/", admin.site.urls),
-	path("videos/", api.urls),
+    path("admin/", admin.site.urls),
+    path("", api.urls),
 ]

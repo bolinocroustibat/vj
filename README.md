@@ -45,7 +45,7 @@ Launch the Django web server:
 
 - `/videos/`: Returns a random YouTube ID
 - `/videos/{theme_name}`: Returns a random YouTube ID for the given theme
-- `/videos/docs`: Swagger documentatino and version
+- `/docs`: Swagger documentation and version
 
 
 ## Admin

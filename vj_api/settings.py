@@ -140,6 +140,7 @@ except Exception as e:
 
 pyproject: dict = toml.load("pyproject.toml")
 APP_NAME: str = pyproject["tool"]["poetry"]["name"]
+DESCRIPTION: str = pyproject["tool"]["poetry"]["description"]
 VERSION: str = pyproject["tool"]["poetry"]["version"]
 sentry_sdk.init(
 	dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",

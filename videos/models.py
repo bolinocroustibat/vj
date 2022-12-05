@@ -8,7 +8,7 @@ class Theme(models.Model):
 
 	class Meta:
 		db_table = "themes"
-		
+
 	def __str__(self) -> str:
 		return f"{self.pk} - {self.name}"
 

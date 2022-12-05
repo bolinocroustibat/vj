@@ -4,13 +4,13 @@ from typing import Optional
 
 import requests
 from django.db import IntegrityError
-from django.http import Http404, HttpResponse
-from ninja import NinjaAPI
+from django.http import Http404
+from ninja import Router
 
 from videos.models import Theme, Video
-from vj_api.settings import VERSION, YOUTUBE_API_KEY, logger
+from vj_api.settings import YOUTUBE_API_KEY, logger
 
-api = NinjaAPI(version=VERSION)
+router = Router(tags=["videos"])
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_DOCS_URL = "https://www.googleapis.com/youtube/v3/videos"
@@ -21,13 +21,19 @@ DICTIONNARIES: dict = {
 }
 
 
-@api.get("/")
-def get_video(request) -> HttpResponse:
+@router.get("/")
+def get_video(request) -> dict:
+    """
+    Get a random YouTube video ID with no specific theme.
+    """
     return return_random_video_info(theme=None)
 
 
-@api.get("/{theme_name}")
-def get_video_from_theme(request, theme_name: str) -> HttpResponse:
+@router.get("/{theme_name}")
+def get_video_from_theme(request, theme_name: str) -> dict:
+    """
+    Get a random YouTube video ID a given theme.
+    """
     theme, created = Theme.objects.get_or_create(name=theme_name)
     return return_random_video_info(theme=theme)
 
