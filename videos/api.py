@@ -83,7 +83,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
         for item in content["items"]:
             try:
                 for idx, video in enumerate(videos):
-                    # to be sure (of the responbse is not in order), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
+                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"][2:]
                         hours = 0
@@ -149,11 +149,11 @@ def populate_db(videos: list[Video]) -> None:
     for v in videos:
         try:
             v.save()
-            logger.info(f'Saved a new video ID "{v.title}" in DB')
+            logger.info(f'Saved a new video ID "{v.id}" in DB')
         except IntegrityError as e:
-            logger.info(f'Video "{v.title}" already in DB: {str(e)}')
+            logger.info(f'Video ID "{v.id}" already in DB: {str(e)}')
         except Exception as e:
-            logger.error(str(e))
+            logger.error(f'Error saving video ID "{v.id}" in DB: {str(e)}')
 
 
 def get_random_word(lang: Optional[str] = None) -> str:
