@@ -21,15 +21,10 @@ Python API with a MySQL database using Django framework.
 
 Create a virtual environnement and install the dependencies in it with Poetry single command (or PDM):
 ```sh
-poetry install
+pdm install
 ```
 
 ## Run 
-
-Activate the virtual environement:
-```sh
-poetry shell
-```
 
 Put your YouTube API v3 key in your local_settings.py:
 ```sh
@@ -38,7 +33,7 @@ YOUTUBE_API_KEY="MY_API_KEY"
 
 Launch the Django web server:
 ```sh
-./manage.py runserver
+pdm run ./manage.py runserver
 ```
 
 ## Endpoints

@@ -140,28 +140,24 @@ except Exception as e:
 
 with open("pyproject.toml", "rb") as f:
 	pyproject: dict = tomllib.load(f)
-APP_NAME: str = pyproject["tool"]["poetry"]["name"]
-DESCRIPTION: str = pyproject["tool"]["poetry"]["description"]
-VERSION: str = pyproject["tool"]["poetry"]["version"]
+APP_NAME: str = pyproject["project"]["name"]
+DESCRIPTION: str = pyproject["project"]["description"]
+VERSION: str = pyproject["project"]["version"]
 sentry_sdk.init(
 	dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
 	integrations=[
 		DjangoIntegration(),
 	],
 	release=f"{APP_NAME}@{VERSION}",
-
 	# Set traces_sample_rate to 1.0 to capture 100%
 	# of transactions for performance monitoring.
-	# We recommend adjusting this value in production.
+	# Sentry recommend adjusting this value in production.
 	traces_sample_rate=1.0,
-
 	# If you wish to associate users to errors (assuming you are using
 	# django.contrib.auth) you may enable sending PII data.
 	send_default_pii=True,
-
 	# Experimental profiling
 	_experiments={
 		"profiles_sample_rate": 1.0,
 	}
-
 )
