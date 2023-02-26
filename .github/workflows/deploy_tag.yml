@@ -1,9 +1,9 @@
-name: Deploy to prod on push to main
+name: Deploy to prod when tag
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   deploy-prod:
@@ -38,3 +38,13 @@ jobs:
             python3 /root/www/vj-api/manage.py migrate
             python3 /root/www/vj-api/manage.py collectstatic --no-input
             sudo systemctl restart vj-api.service
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1.2.1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: "adrien-carpentier"
+          SENTRY_PROJECT: "vj-api"
+        with:
+          environment: production
+          version: ${{ github.ref_name }}
