@@ -8,6 +8,7 @@ from django.http import Http404
 from ninja import Router
 
 from videos.models import Theme, Video
+from vj_api.helpers import convert_youtube_duration_to_seconds
 from vj_api.settings import YOUTUBE_API_KEY, logger
 
 router = Router(tags=["videos"])
@@ -85,19 +86,10 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                 for idx, video in enumerate(videos):
                     # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
-                        duration_yt: str = item["contentDetails"]["duration"][2:]
-                        hours = 0
-                        if "H" in duration_yt:
-                            hours = int(duration_yt.split("H")[0])
-                            duration_yt = duration_yt.split("H")[1]
-                        minutes = 0
-                        if "M" in duration_yt:
-                            minutes = int(duration_yt.split("M")[0])
-                            duration_yt = duration_yt.split("M")[1]
-                        seconds = 0
-                        if "S" in duration_yt:
-                            seconds = int(duration_yt.split("S")[0])
-                        video.duration = hours * 3600 + minutes * 60 + seconds
+                        duration_yt: str = item["contentDetails"]["duration"]
+                        video.duration: int = convert_youtube_duration_to_seconds(
+                            duration_yt
+                        )
                         video.save()
                         videos[idx] = video  # update the element in the response list
             except Exception as e:
