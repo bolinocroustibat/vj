@@ -90,8 +90,14 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                         video.duration: int = convert_youtube_duration_to_seconds(
                             duration_yt
                         )
-                        video.save()
-                        videos[idx] = video  # update the element in the response list
+                        try:
+                            video.save()
+                        except IntegrityError as e:
+                            logger.error(f"Video \"{video.youtube_id}\" couldn't be updated because of a duplicate: {str(e)}'. This error should not happen.")
+                        except Exception as e:
+                            logger.error(f'Error updating video "{video.youtube_id}" in DB: {str(e)}')
+                        else:
+                            videos[idx] = video  # update the element in the response list
             except Exception as e:
                 logger.error(str(e))
     return videos
