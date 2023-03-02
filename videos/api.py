@@ -151,9 +151,9 @@ def populate_db(videos: list[Video]) -> None:
             v.save()
             logger.info(f'Saved a new video ID "{v.id}" in DB')
         except IntegrityError as e:
-            logger.info(f'Video ID "{v.id}" already in DB: {str(e)}')
+            logger.warning(f'Video "{v.youtube_id}" already in DB: {str(e)}')
         except Exception as e:
-            logger.error(f'Error saving video ID "{v.id}" in DB: {str(e)}')
+            logger.error(f'Error saving video "{v.youtube_id}" in DB: {str(e)}')
 
 
 def get_random_word(lang: Optional[str] = None) -> str:
