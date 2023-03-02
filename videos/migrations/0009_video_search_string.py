@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('videos', '0008_auto_20210916_1026'),
+        ("videos", "0008_auto_20210916_1026"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='video',
-            name='search_string',
+            model_name="video",
+            name="search_string",
             field=models.CharField(editable=False, max_length=255, null=True),
         ),
     ]

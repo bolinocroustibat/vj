@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('videos', '0005_video_thumbnail'),
+        ("videos", "0005_video_thumbnail"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='video',
-            name='thumbnail',
+            model_name="video",
+            name="thumbnail",
             field=models.URLField(editable=False, null=True),
         ),
         migrations.AlterField(
-            model_name='video',
-            name='title',
+            model_name="video",
+            name="title",
             field=models.CharField(editable=False, max_length=200, null=True),
         ),
         migrations.AlterField(
-            model_name='video',
-            name='youtube_id',
+            model_name="video",
+            name="youtube_id",
             field=models.CharField(editable=False, max_length=32, unique=True),
         ),
     ]

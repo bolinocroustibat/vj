@@ -32,73 +32,73 @@ DEBUG = False
 # Application definition
 
 INSTALLED_APPS = [
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'corsheaders',
-	'videos',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "corsheaders",
+    "videos",
 ]
 
 MIDDLEWARE = [
-	'corsheaders.middleware.CorsMiddleware',
-	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'vj_api.urls'
+ROOT_URLCONF = "vj_api.urls"
 
 TEMPLATES = [
-	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-			],
-		},
-	},
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
 ]
 
-WSGI_APPLICATION = 'vj_api.wsgi.application'
+WSGI_APPLICATION = "vj_api.wsgi.application"
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-	{
-		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-	},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -110,57 +110,60 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # http://whitenoise.evans.io/en/stable/django.html
 # where the static files will go when doing a collectstatic if debug=false
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_URL = "/static/"
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Color logging
 import colorlog
 
 handler = colorlog.StreamHandler()
-handler.setFormatter(colorlog.ColoredFormatter(
-	'%(log_color)s%(levelname)s line %(lineno)s: %(message)s'))
+handler.setFormatter(
+    colorlog.ColoredFormatter("%(log_color)s%(levelname)s line %(lineno)s: %(message)s")
+)
 
 logger = colorlog.getLogger()
 logger.addHandler(handler)
 
 # Local settings
 try:
-	from .local_settings import *
+    from .local_settings import *
 except Exception as e:
-	logger.error(e)
-	logger.error("Note: local_settings.py not present or invalid. Using default settings.")
-	LOGGING_LEVEL = "DEBUG"
+    logger.error(e)
+    logger.error(
+        "Note: local_settings.py not present or invalid. Using default settings."
+    )
+    LOGGING_LEVEL = "DEBUG"
 
 with open("pyproject.toml", "rb") as f:
-	pyproject: dict = tomllib.load(f)
+    pyproject: dict = tomllib.load(f)
 APP_NAME: str = pyproject["project"]["name"]
 DESCRIPTION: str = pyproject["project"]["description"]
 VERSION: str = pyproject["project"]["version"]
 
 if ENVIRONMENT != "local":
-	sentry_sdk.init(
-		dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
-		integrations=[
-			DjangoIntegration(),
-		],
-		release=f"{APP_NAME}@{VERSION}",
-		environment=ENVIRONMENT,
-		# Set traces_sample_rate to 1.0 to capture 100%
-		# of transactions for performance monitoring.
-		# Sentry recommend adjusting this value in production.
-		traces_sample_rate=1.0,
-		# If you wish to associate users to errors (assuming you are using
-		# django.contrib.auth) you may enable sending PII data.
-		send_default_pii=True,
-		# Experimental profiling
-		_experiments={
-			"profiles_sample_rate": 1.0,
-		}
-	)
+    sentry_sdk.init(
+        dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
+        integrations=[
+            DjangoIntegration(),
+        ],
+        release=f"{APP_NAME}@{VERSION}",
+        environment=ENVIRONMENT,
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # Sentry recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        # Experimental profiling
+        _experiments={
+            "profiles_sample_rate": 1.0,
+        },
+    )

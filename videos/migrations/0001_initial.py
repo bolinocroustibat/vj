@@ -5,34 +5,53 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Theme',
+            name="Theme",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=64)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=64)),
             ],
             options={
-                'db_table': 'themes',
+                "db_table": "themes",
             },
         ),
         migrations.CreateModel(
-            name='Video',
+            name="Video",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('youtube_id', models.CharField(max_length=32, unique=True)),
-                ('length', models.IntegerField(null=True)),
-                ('best_start', models.IntegerField(null=True)),
-                ('theme', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='videos.theme')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("youtube_id", models.CharField(max_length=32, unique=True)),
+                ("length", models.IntegerField(null=True)),
+                ("best_start", models.IntegerField(null=True)),
+                (
+                    "theme",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="videos.theme"
+                    ),
+                ),
             ],
             options={
-                'db_table': 'videos',
+                "db_table": "videos",
             },
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('videos', '0002_alter_video_theme'),
+        ("videos", "0002_alter_video_theme"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='video',
-            old_name='length',
-            new_name='duration',
+            model_name="video",
+            old_name="length",
+            new_name="duration",
         ),
     ]
