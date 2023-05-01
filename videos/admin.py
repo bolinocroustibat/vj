@@ -49,7 +49,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     def get_link_tag(self, obj):
         return format_html(
-            f"<a href='https://www.youtube.com/watch?v={obj.youtube_id}' target='_blank' />{obj.youtube_id}</a>"
+            f"<a href='https://www.youtube.com/watch?v={obj.youtube_id}' target='_blank' />{obj.youtube_id}</a>"  # noqa 501
         )
 
     get_link_tag.short_description = "link"

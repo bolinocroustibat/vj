@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import tomllib
 
+import colorlog
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -79,7 +80,7 @@ WSGI_APPLICATION = "vj_api.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa 501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -121,8 +122,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Color logging
-import colorlog
-
 handler = colorlog.StreamHandler()
 handler.setFormatter(
     colorlog.ColoredFormatter("%(log_color)s%(levelname)s line %(lineno)s: %(message)s")

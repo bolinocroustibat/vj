@@ -49,7 +49,7 @@ def return_random_video_info(theme: Optional[Theme] = None) -> dict:
         try:
             videos = Video.objects.all()
             video = random.choice(videos)
-        except:
+        except Exception:
             raise Http404
     return {
         "theme": theme.name if theme else None,
@@ -84,7 +84,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
         for item in content["items"]:
             try:
                 for idx, video in enumerate(videos):
-                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
+                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria  # noqa 501
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"]
                         video.duration: int = convert_youtube_duration_to_seconds(
@@ -93,11 +93,17 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                         try:
                             video.save()
                         except IntegrityError as e:
-                            logger.error(f"Video \"{video.youtube_id}\" couldn't be updated because of a duplicate: {str(e)}'. This error should not happen.")
+                            logger.error(
+                                f"Video \"{video.youtube_id}\" couldn't be updated because of a duplicate: {str(e)}'. This error should not happen."  # noqa 501
+                            )
                         except Exception as e:
-                            logger.error(f'Error updating video "{video.youtube_id}" in DB: {str(e)}')
+                            logger.error(
+                                f'Error updating video "{video.youtube_id}" in DB: {str(e)}'  # noqa 501
+                            )
                         else:
-                            videos[idx] = video  # update the element in the response list
+                            videos[
+                                idx
+                            ] = video  # update the element in the response list
             except Exception as e:
                 logger.error(str(e))
     return videos
