@@ -27,3 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", api.urls),
 ]
+
+admin.site.site_title = "Video Jockey API"  # the webpage title in the browser tab
+admin.site.site_header = f"Video Jockey API v{VERSION}"
+admin.site.index_title = "Admin"
