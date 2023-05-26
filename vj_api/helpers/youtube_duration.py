@@ -27,6 +27,4 @@ def convert_youtube_duration_to_seconds(duration_yt: str) -> int:
         second = int(second_list[0])
     else:
         second = 0
-    print("zob")
-    print(day + hour + minute + second)
     return day + hour + minute + second

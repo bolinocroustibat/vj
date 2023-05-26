@@ -18,9 +18,13 @@ from django.urls import path
 from ninja import NinjaAPI
 
 from videos.api import router as videos_router
+from vj_api.helpers import ORJSONRenderer
 from vj_api.settings import APP_NAME, DESCRIPTION, VERSION
 
-api = NinjaAPI(title=APP_NAME, description=DESCRIPTION, version=VERSION)
+
+api = NinjaAPI(
+    renderer=ORJSONRenderer(), title=APP_NAME, description=DESCRIPTION, version=VERSION
+)
 api.add_router("/videos/", videos_router)
 
 urlpatterns = [

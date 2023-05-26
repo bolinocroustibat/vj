@@ -1,6 +1,6 @@
 [project]
 name = "vj-api"
-version = "0.2.6"
+version = "0.2.7"
 description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = [{ name = "Adrien Carpentier", email = "me@adriencarpentier.com" }]
 dependencies = [
@@ -9,6 +9,7 @@ dependencies = [
     "django-ninja<1.0.0,>=0.21.0",
     "django-cors-headers<4.0.0,>=3.7.0",
     "gunicorn<21.0.0,>=20.1.0",
+    "orjson>=3.8.14",
     "PyMySQL<2.0.0,>=1.0.3",
     "requests<3.0.0,>=2.25.1",
     "sentry-sdk<2.0.0,>=1.15.0",
