@@ -10,7 +10,8 @@ dependencies = [
     "django-cors-headers<4.0.0,>=3.7.0",
     "gunicorn<21.0.0,>=20.1.0",
     "orjson>=3.8.14",
-    "PyMySQL<2.0.0,>=1.0.3",
+    "psycopg>=3.1.9",
+    "psycopg-binary>=3.1.9",
     "requests<3.0.0,>=2.25.1",
     "sentry-sdk<2.0.0,>=1.15.0",
     "uvicorn<1.0.0,>=0.14.0",
@@ -30,4 +31,4 @@ build-backend = "pdm.pep517.api"
 includes = []
 
 [tool.pdm.dev-dependencies]
-dev = ["black>=23.1.0", "ruff>=0.0.247"]
+dev = ["black>=23.1.0", "ruff>=0.0.275"]
