@@ -1,20 +1,20 @@
 [project]
 name = "vj-api"
-version = "0.3.1"
+version = "0.3.2"
 description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = [{ name = "Adrien Carpentier", email = "me@adriencarpentier.com" }]
 dependencies = [
-    "colorlog<6.0.0,>=5.0.1",
-    "Django<4.3,>=4.2",
-    "django-ninja<1.0.0,>=0.21.0",
-    "django-cors-headers<4.0.0,>=3.7.0",
-    "gunicorn<21.0.0,>=20.1.0",
-    "orjson>=3.8.14",
-    "psycopg>=3.1.9",
-    "psycopg-binary>=3.1.9",
-    "requests<3.0.0,>=2.25.1",
-    "sentry-sdk<2.0.0,>=1.15.0",
-    "uvicorn<1.0.0,>=0.14.0",
+    "colorlog>=6.7.0",
+    "django>=4.2.4",
+    "django-ninja>=0.22.2",
+    "django-cors-headers>=4.2.0",
+    "gunicorn>=21.2.0",
+    "orjson>=3.9.5",
+    "psycopg-binary>=3.1.10",
+    "psycopg>=3.1.10",
+    "requests>=2.31.0",
+    "sentry-sdk>=1.29.2",
+    "uvicorn>=0.23.2",
 ]
 requires-python = ">=3.11,<3.12"
 dynamic = ["classifiers", "classifiers"]
