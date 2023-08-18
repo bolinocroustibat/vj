@@ -33,7 +33,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /root/www/vj-api
-            source /root/www/vj-api/venv/bin/activate
+            source /root/www/vj-api/.venv/bin/activate
             pip install -r /root/www/vj-api/requirements.txt
             python3 /root/www/vj-api/manage.py migrate
             python3 /root/www/vj-api/manage.py collectstatic --no-input
