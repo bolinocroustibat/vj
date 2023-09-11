@@ -1,6 +1,5 @@
 import json
 import random
-from typing import Optional
 
 import requests
 from django.db import IntegrityError
@@ -39,8 +38,8 @@ def get_video_from_theme(request, theme_name: str) -> dict:
     return return_random_video_info(theme=theme)
 
 
-def return_random_video_info(theme: Optional[Theme] = None) -> dict:
-    videos: Optional[list[Video]] = get_videos_from_youtube(theme=theme)
+def return_random_video_info(theme: Theme | None = None) -> dict:
+    videos: list[Video] | None = get_videos_from_youtube(theme=theme)
     if videos and len(videos):
         populate_db(videos)
         videos = update_videos_duration_from_youtube(videos=videos)
@@ -109,7 +108,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     return videos
 
 
-def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Video]]:
+def get_videos_from_youtube(theme: Theme | None = None) -> list[Video] | None:
     search_string: str = get_random_word()
     if theme:
         search_string = f"{theme.name} {search_string}"
@@ -160,7 +159,7 @@ def populate_db(videos: list[Video]) -> None:
             logger.error(f'Error saving video "{v.youtube_id}" in DB: {str(e)}')
 
 
-def get_random_word(lang: Optional[str] = None) -> str:
+def get_random_word(lang: str | None = None) -> str:
     if not lang:
         lang: str = random.choice(list(DICTIONNARIES.keys()))
     lines = open(DICTIONNARIES[lang]).read().splitlines()
