@@ -2,12 +2,12 @@
 
 Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
 
-This branch is using Django, Django Ninja and MySQL/MariaDB. There is [another branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
+This branch is using Django, Django Ninja and PostgreSQL. There is also a deprecated [branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
 
 
 ## Main dependencies
 
-Python API with a MySQL database using Django framework.
+Python API with a PostgreSQL database using Django framework.
 
 - Python 3.11
 - A PostgreSQL 15 database (should also work with other PostgreSQL versions)
@@ -18,7 +18,7 @@ Python API with a MySQL database using Django framework.
 
 ## Install
 
-Create a virtual environnement and install the dependencies in it with PDM:
+Create a virtual environnement and install the dependencies in it with [PDM](https://pdm.fming.dev/):
 ```sh
 pdm install
 ```
@@ -71,7 +71,7 @@ pdm run ./manage.py runserver
 
 - `/videos/`: Returns a random YouTube ID
 - `/videos/{theme_name}`: Returns a random YouTube ID for the given theme
-- `/docs`: Swagger documentation and version
+- `/docs`: OpenAPI documentation and API info
 
 
 ## Admin
