@@ -1,6 +1,6 @@
 [project]
 name = "vj-api"
-version = "0.3.2"
+version = "0.3.3"
 description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = [{ name = "Adrien Carpentier", email = "me@adriencarpentier.com" }]
 dependencies = [
@@ -31,4 +31,9 @@ build-backend = "pdm.pep517.api"
 includes = []
 
 [tool.pdm.dev-dependencies]
-dev = ["black>=23.1.0", "ruff>=0.0.275"]
+dev = [
+    "ruff>=0.1.0",
+]
+
+[tool.ruff]
+ignore = ["E501"]

@@ -83,7 +83,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
         for item in content["items"]:
             try:
                 for idx, video in enumerate(videos):
-                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria  # noqa 501
+                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"]
                         video.duration: int = convert_youtube_duration_to_seconds(
