@@ -32,11 +32,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/www/vj-api
-            source /root/www/vj-api/.venv/bin/activate
-            pip install -r /root/www/vj-api/requirements.lock
-            python3 /root/www/vj-api/manage.py migrate
-            python3 /root/www/vj-api/manage.py collectstatic --no-input
+            cd /home/www/vj-api
+            source /home/www/vj-api/.venv/bin/activate
+            pip install -r /home/www/vj-api/requirements.lock
+            python3 /home/www/vj-api/manage.py migrate
+            python3 /home/www/vj-api/manage.py collectstatic --no-input
             sudo systemctl restart vj-api.service
 
       - name: Create Sentry release
