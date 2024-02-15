@@ -10,7 +10,7 @@ jobs:
     name: Deploy to prod from ${{ github.ref_name }}/${{ github.sha }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -34,13 +34,13 @@ jobs:
           script: |
             cd /root/www/vj-api
             source /root/www/vj-api/.venv/bin/activate
-            pip install -r /root/www/vj-api/requirements.txt
+            pip install -r /root/www/vj-api/requirements.lock
             python3 /root/www/vj-api/manage.py migrate
             python3 /root/www/vj-api/manage.py collectstatic --no-input
             sudo systemctl restart vj-api.service
 
       - name: Create Sentry release
-        uses: getsentry/action-release@v1.2.1
+        uses: getsentry/action-release@v1.7.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: "adrien-carpentier"

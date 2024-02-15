@@ -12,16 +12,17 @@ Python API with a PostgreSQL database using Django framework.
 - Python 3.11
 - A PostgreSQL 15 database (should also work with other PostgreSQL versions)
 - A YouTube API v3 key
-- A modern Python package manager like [PDM](https://pdm.fming.dev/)
+- A modern Python package manager like [Rye](https://rye-up.com/) or [PDM](https://pdm.fming.dev/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
 
 ## Install
 
-Create a virtual environnement and install the dependencies in it with [PDM](https://pdm.fming.dev/):
-```sh
-pdm install
+Create a virtual environnement and install the dependencies in it with [Rye](https://rye-up.com/) single command:
+```bash
+rye sync
 ```
+
 
 ## Run 
 
@@ -48,23 +49,35 @@ YOUTUBE_API_KEY="MY_API_KEY"
 ```
 
 Migrate the database:
-```sh
-pdm run ./manage.py migrate
+```bash
+rye run ./manage.py migrate
 ```
 
 Create a superuser:
-```sh
-pdm run ./manage.py createsuperuser
+```bash
+rye run ./manage.py createsuperuser
 ```
 
 Collect the static files:
-```sh
-pdm run ./manage.py collectstatic
+```bash
+rye run ./manage.py collectstatic
 ```
 
 Finally, launch the Django web server:
-```sh
-pdm run ./manage.py runserver
+```bash
+rye run ./manage.py runserver
+```
+
+## Lint and format the code
+
+Lint with:
+```bash
+rye lint
+```
+
+Format with:
+```bash
+rye fmt
 ```
 
 ## Endpoints
