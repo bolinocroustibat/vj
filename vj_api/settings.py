@@ -135,9 +135,7 @@ try:
     from .local_settings import *
 except Exception as e:
     logger.error(e)
-    logger.error(
-        "Note: local_settings.py not present or invalid. Using default settings."
-    )
+    logger.error("Note: local_settings.py not present or invalid. Using default settings.")
     LOGGING_LEVEL = "DEBUG"
 
 with open("pyproject.toml", "rb") as f:

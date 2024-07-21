@@ -74,9 +74,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     content: dict = json.loads(response_content)
     if content.get("error", None):
         if content["error"].get("code", None) == 403:
-            logger.error(
-                'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
-            )
+            logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
         else:
             logger.error('Error: "{}"'.format(content["error"]))
     else:
@@ -86,9 +84,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                     # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"]
-                        video.duration: int = convert_youtube_duration_to_seconds(
-                            duration_yt
-                        )
+                        video.duration: int = convert_youtube_duration_to_seconds(duration_yt)
                         try:
                             video.save()
                         except IntegrityError as e:
@@ -100,9 +96,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                                 f'Error updating video "{video.youtube_id}" in DB: {str(e)}'  # noqa 501
                             )
                         else:
-                            videos[
-                                idx
-                            ] = video  # update the element in the response list
+                            videos[idx] = video  # update the element in the response list
             except Exception as e:
                 logger.error(str(e))
     return videos
@@ -124,9 +118,7 @@ def get_videos_from_youtube(theme: Theme | None = None) -> list[Video] | None:
     content: dict = json.loads(response_content)
     if content.get("error", None):
         if content["error"].get("code", None) == 403:
-            logger.error(
-                'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
-            )
+            logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
         else:
             logger.error('Error: "{}"'.format(content["error"]))
     else:
