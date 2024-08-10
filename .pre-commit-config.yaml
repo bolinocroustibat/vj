@@ -1,4 +1,4 @@
-epos:
+repos:
   # https://github.com/pre-commit/pre-commit-hooks#pre-commit-hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -9,10 +9,10 @@ epos:
       - id: check-added-large-files
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.1 # Ruff version
+    rev: v0.5.5 # Ruff version
     hooks:
       # Run the linter
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix, --select, I]
+        args: [--fix, --exit-non-zero-on-fix, --extend-select, I]
       # Run the formatter
       - id: ruff-format

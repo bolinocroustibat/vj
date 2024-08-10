@@ -1,11 +1,11 @@
 [project]
 name = "vj-api"
-version = "0.3.6"
+version = "0.3.7"
 description = "Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota."
 authors = [{ name = "Adrien Carpentier", email = "me@adriencarpentier.com" }]
 dependencies = [
     "colorlog>=6.7.0",
-    "django>=4.2.4",
+    "django>=5.1",
     "django-ninja>=0.22.2",
     "django-cors-headers>=4.2.0",
     "gunicorn>=21.2.0",
@@ -38,4 +38,4 @@ dev = [
 
 [tool.ruff]
 line-length = 100
-lint = { select = ["I"] }
+lint = { extend-select = ["I"], ignore = ["F401"] }

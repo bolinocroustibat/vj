@@ -131,8 +131,9 @@ logger = colorlog.getLogger()
 logger.addHandler(handler)
 
 # Local settings
+ENVIRONMENT = "unknown"
 try:
-    from .local_settings import *
+    from .local_settings import *  # noqa
 except Exception as e:
     logger.error(e)
     logger.error("Note: local_settings.py not present or invalid. Using default settings.")
@@ -147,20 +148,15 @@ VERSION: str = pyproject["project"]["version"]
 if ENVIRONMENT != "local":
     sentry_sdk.init(
         dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
-        integrations=[
-            DjangoIntegration(),
-        ],
+        integrations=[DjangoIntegration()],
         release=f"{APP_NAME}@{VERSION}",
         environment=ENVIRONMENT,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         # Sentry recommend adjusting this value in production.
         traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
         # If you wish to associate users to errors (assuming you are using
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
-        # Experimental profiling
-        _experiments={
-            "profiles_sample_rate": 1.0,
-        },
     )
