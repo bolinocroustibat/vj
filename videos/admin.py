@@ -1,9 +1,8 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from django.contrib.auth.models import Group
+from django.utils.html import format_html
 
 from .models import Theme, Video
-
 
 admin.site.unregister(Group)
 
@@ -49,7 +48,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     def get_link_tag(self, obj):
         return format_html(
-            f"<a href='https://www.youtube.com/watch?v={obj.youtube_id}' target='_blank' />{obj.youtube_id}</a>"  # noqa 501
+            f"<a href='https://www.youtube.com/watch?v={obj.youtube_id}' target='_blank' />{obj.youtube_id}</a>"
         )
 
     get_link_tag.short_description = "link"

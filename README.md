@@ -2,45 +2,89 @@
 
 Provides a random YouTube video ID according to an optional given theme, and store cached YouTube IDs in a DB for later usage without depleting the YouTube API quota.
 
-This branch is using Django, Django Ninja and MySQL/MariaDB. There is [another branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
+This branch is using Django, Django Ninja and PostgreSQL. There is also a deprecated [branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
 
 
 ## Main dependencies
 
-Python API with a MySQL database using Django framework.
+Python API with a PostgreSQL database using Django framework.
 
 - Python 3.11
-- A modern Python package manager like [Poetry](https://python-poetry.org/) or [PDM](https://pdm.fming.dev/)
+- A PostgreSQL 15 database (should also work with other PostgreSQL versions)
+- A YouTube API v3 key
+- A modern Python package manager like [Rye](https://rye-up.com/) or [PDM](https://pdm.fming.dev/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
-- A MySQL or MariaDB database (should also work with SQlite)
-- A YouTube API v3 key
-
 
 ## Install
 
-Create a virtual environnement and install the dependencies in it with Poetry single command (or PDM):
-```sh
-pdm install
+Create a virtual environnement and install the dependencies in it with [Rye](https://rye-up.com/) single command:
+```bash
+rye sync
 ```
+
 
 ## Run 
 
-Put your YouTube API v3 key in your local_settings.py:
+Run a PostgreSQL database instance with a `vj-api` database and a user.
+For example, with Docker:
 ```sh
+docker run --name vj-api-db -e POSTGRES_USER=postgres -e POSTGRES_DB=vj-api -p 5432:5432 -d postgres
+```
+
+Create a `local_settings.py` Python settings file in the `vj_api` folder, and add the database settings and your your YouTube API v3 key in it:
+```python
+DATABASES = {
+	"default": {
+		"ENGINE": "django.db.backends.postgresql",
+		"NAME": "vj-api",
+		"USER": "postgres",
+		"PASSWORD": "",
+		"HOST": "localhost",  # Or an IP Address that your DB is hosted on. DO NOT USE "127.0.0.1" but "localhost"
+		"PORT": "5432",
+	}
+}
+
 YOUTUBE_API_KEY="MY_API_KEY"
 ```
 
-Launch the Django web server:
-```sh
-pdm run ./manage.py runserver
+Migrate the database:
+```bash
+rye run ./manage.py migrate
+```
+
+Create a superuser:
+```bash
+rye run ./manage.py createsuperuser
+```
+
+Collect the static files:
+```bash
+rye run ./manage.py collectstatic
+```
+
+Finally, launch the Django web server:
+```bash
+rye run ./manage.py runserver
+```
+
+## Lint and format the code
+
+Lint with:
+```bash
+rye lint
+```
+
+Format with:
+```bash
+rye fmt
 ```
 
 ## Endpoints
 
 - `/videos/`: Returns a random YouTube ID
 - `/videos/{theme_name}`: Returns a random YouTube ID for the given theme
-- `/docs`: Swagger documentation and version
+- `/docs`: OpenAPI documentation and API info
 
 
 ## Admin
@@ -49,7 +93,7 @@ Access all the cached YouTube videos, themes and their previews on:
 - `/admin/`
 
 
-### To run as async with ASGI with Uvicorn
+## To run as async with ASGI with Uvicorn
 
 ```sh
 gunicorn vj_api.asgi:application -k uvicorn.workers.UvicornWorker

@@ -27,5 +27,9 @@ homepage = "https://vj-api.adriencarpentier.com"
 line-length = 100
 lint = { extend-select = ["I"] }
 
+[tool.ruff]
+line-length = 100
+lint = { extend-select = ["I"] }
+
 [tool.uv]
 dev-dependencies = ["ruff>=0.6.2"]

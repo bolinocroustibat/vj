@@ -1,6 +1,5 @@
 import json
 import random
-from typing import Optional
 
 import requests
 from django.db import IntegrityError
@@ -39,8 +38,8 @@ def get_video_from_theme(request, theme_name: str) -> dict:
     return return_random_video_info(theme=theme)
 
 
-def return_random_video_info(theme: Optional[Theme] = None) -> dict:
-    videos: Optional[list[Video]] = get_videos_from_youtube(theme=theme)
+def return_random_video_info(theme: Theme | None = None) -> dict:
+    videos: list[Video] | None = get_videos_from_youtube(theme=theme)
     if videos and len(videos):
         populate_db(videos)
         videos = update_videos_duration_from_youtube(videos=videos)
@@ -75,41 +74,35 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     content: dict = json.loads(response_content)
     if content.get("error", None):
         if content["error"].get("code", None) == 403:
-            logger.error(
-                'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
-            )
+            logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
         else:
             logger.error('Error: "{}"'.format(content["error"]))
     else:
         for item in content["items"]:
             try:
                 for idx, video in enumerate(videos):
-                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria  # noqa 501
+                    # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"]
-                        video.duration: int = convert_youtube_duration_to_seconds(
-                            duration_yt
-                        )
+                        video.duration: int = convert_youtube_duration_to_seconds(duration_yt)
                         try:
                             video.save()
                         except IntegrityError as e:
                             logger.error(
-                                f"Video \"{video.youtube_id}\" couldn't be updated because of a duplicate: {str(e)}'. This error should not happen."  # noqa 501
+                                f"Video \"{video.youtube_id}\" couldn't be updated because of a duplicate: {str(e)}'. This error should not happen."
                             )
                         except Exception as e:
                             logger.error(
-                                f'Error updating video "{video.youtube_id}" in DB: {str(e)}'  # noqa 501
+                                f'Error updating video "{video.youtube_id}" in DB: {str(e)}'
                             )
                         else:
-                            videos[
-                                idx
-                            ] = video  # update the element in the response list
+                            videos[idx] = video  # update the element in the response list
             except Exception as e:
                 logger.error(str(e))
     return videos
 
 
-def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Video]]:
+def get_videos_from_youtube(theme: Theme | None = None) -> list[Video] | None:
     search_string: str = get_random_word()
     if theme:
         search_string = f"{theme.name} {search_string}"
@@ -125,9 +118,7 @@ def get_videos_from_youtube(theme: Optional[Theme] = None) -> Optional[list[Vide
     content: dict = json.loads(response_content)
     if content.get("error", None):
         if content["error"].get("code", None) == 403:
-            logger.error(
-                'Forbidden by YouTube: "{}"'.format(content["error"]["message"])
-            )
+            logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
         else:
             logger.error('Error: "{}"'.format(content["error"]))
     else:
@@ -160,7 +151,7 @@ def populate_db(videos: list[Video]) -> None:
             logger.error(f'Error saving video "{v.youtube_id}" in DB: {str(e)}')
 
 
-def get_random_word(lang: Optional[str] = None) -> str:
+def get_random_word(lang: str | None = None) -> str:
     if not lang:
         lang: str = random.choice(list(DICTIONNARIES.keys()))
     lines = open(DICTIONNARIES[lang]).read().splitlines()
