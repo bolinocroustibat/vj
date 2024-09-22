@@ -9,22 +9,22 @@ This branch is using Django, Django Ninja and PostgreSQL. There is also a deprec
 
 Python API with a PostgreSQL database using Django framework.
 
-- Python 3.11
-- A PostgreSQL 15 database (should also work with other PostgreSQL versions)
+- Python >= 3.10
+- A PostgreSQL 15 database (not tested with other PostgreSQL versions)
 - A YouTube API v3 key
-- A modern Python package manager like [Rye](https://rye-up.com/) or [PDM](https://pdm.fming.dev/)
+- A modern Python package manager like [uv](https://docs.astral.sh/uv/)
 - [Django](https://www.djangoproject.com/)
 - [Django-Ninja](https://django-ninja.rest-framework.com/)
 
 ## Install
 
-Create a virtual environnement and install the dependencies in it with [Rye](https://rye-up.com/) single command:
+Create a virtual environnement and install the dependencies in it with [uv](https://docs.astral.sh/uv/) single command:
 ```bash
-rye sync
+uv sync
 ```
 
 
-## Run 
+## Run
 
 Run a PostgreSQL database instance with a `vj-api` database and a user.
 For example, with Docker:
@@ -50,34 +50,29 @@ YOUTUBE_API_KEY="MY_API_KEY"
 
 Migrate the database:
 ```bash
-rye run ./manage.py migrate
+uv run ./manage.py migrate
 ```
 
 Create a superuser:
 ```bash
-rye run ./manage.py createsuperuser
+uv run ./manage.py createsuperuser
 ```
 
 Collect the static files:
 ```bash
-rye run ./manage.py collectstatic
+uv run ./manage.py collectstatic
 ```
 
 Finally, launch the Django web server:
 ```bash
-rye run ./manage.py runserver
+uv run ./manage.py runserver
 ```
 
 ## Lint and format the code
 
-Lint with:
+Lintand format code with:
 ```bash
-rye lint
-```
-
-Format with:
-```bash
-rye fmt
+uv run ruff check --fix && ruff format
 ```
 
 ## Endpoints
