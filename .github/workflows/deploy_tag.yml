@@ -43,7 +43,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Execute server commands for deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -52,9 +52,9 @@ jobs:
           script: |
             cd /home/www/vj-api
             git pull
-            uv sync
-            uv run /home/www/vj-api/manage.py migrate
-            uv run /home/www/vj-api/manage.py collectstatic --no-input
+            /usr/local/bin/uv/bin/uv sync
+            /usr/local/bin/uv/bin/uv run /home/www/blockhaus101/manage.py migrate
+            /usr/local/bin/uv/bin/uv run /home/www/blockhaus101/manage.py collectstatic --no-input
             sudo systemctl restart vj-api.service
 
       - name: Create Sentry release
