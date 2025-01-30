@@ -21,7 +21,7 @@ dynamic = ["classifiers", "classifiers"]
 license = { text = "MIT" }
 
 [project.urls]
-homepage = "https://vj-api.adriencarpentier.com"
+homepage = "https://vj.adriencarpentier.com/api"
 
 [tool.ruff]
 line-length = 100
