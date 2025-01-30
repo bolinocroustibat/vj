@@ -77,15 +77,15 @@ uv run ruff check --fix && ruff format
 
 ## Endpoints
 
-- `/videos/`: Returns a random YouTube ID
-- `/videos/{theme_name}`: Returns a random YouTube ID for the given theme
-- `/docs`: OpenAPI documentation and API info
+- `/api/videos/`: Returns a random YouTube ID
+- `/api/videos/{theme_name}`: Returns a random YouTube ID for the given theme
+- `/api/docs`: OpenAPI documentation and API info
 
 
 ## Admin
 
 Access all the cached YouTube videos, themes and their previews on:
-- `/admin/`
+- `/api/admin/`
 
 
 ## To run as async with ASGI with Uvicorn
