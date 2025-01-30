@@ -26,8 +26,8 @@ api = NinjaAPI(renderer=ORJSONRenderer(), title=APP_NAME, description=DESCRIPTIO
 api.add_router("/videos/", videos_router)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", api.urls),
+    path("api/admin/", admin.site.urls),
+    path("api/", api.urls),
 ]
 
 admin.site.site_title = "Video Jockey API"  # the webpage title in the browser tab
