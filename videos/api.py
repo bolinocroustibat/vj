@@ -29,13 +29,41 @@ def get_video(request) -> dict:
     return return_random_video_info(theme=None)
 
 
-@router.get("/{theme_name}")
+@router.get("/theme/{theme_name}")
 def get_video_from_theme(request, theme_name: str) -> dict:
     """
     Get a random YouTube video ID a given theme.
     """
     theme, created = Theme.objects.get_or_create(name=theme_name)
     return return_random_video_info(theme=theme)
+
+
+@router.get("/channel/{channel_name}")
+def get_video_from_channel(request, channel_name: str) -> dict:
+    """
+    Get a random YouTube video ID from a given channel.
+    """
+    videos: list[Video] | None = get_videos_from_youtube(channel=channel_name)
+    if videos and len(videos):
+        populate_db(videos)
+        videos = update_videos_duration_from_youtube(videos=videos)
+        video = random.choice(videos)
+    else:
+        try:
+            videos = list(Video.objects.filter(channel_name=channel_name))
+            if not videos:
+                raise Http404("No videos found for this channel")
+            video = random.choice(videos)
+        except Exception:
+            raise Http404
+    return {
+        "theme": None,
+        "youtubeId": video.youtube_id,
+        "url": f"https://www.youtube.com/watch?v={video.youtube_id}",
+        "videoDuration": video.duration,
+        "bestStart": video.best_start,
+        "channelName": video.channel_name,
+    }
 
 
 def return_random_video_info(theme: Theme | None = None) -> dict:
@@ -102,19 +130,28 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     return videos
 
 
-def get_videos_from_youtube(theme: Theme | None = None) -> list[Video] | None:
-    search_string: str = get_random_word()
+def get_videos_from_youtube(
+    theme: Theme | None = None, channel: str | None = None
+) -> list[Video] | None:
+    search_string: str = get_random_word() if not channel else ""
     if theme:
         search_string = f"{theme.name} {search_string}"
+
+    params = {
+        "key": YOUTUBE_API_KEY,
+        "part": "snippet",
+        "type": "video",
+        "q": search_string,
+    }
+
+    if channel:
+        params["channelId"] = get_channel_id(channel)
+
     response_content = requests.get(
         YOUTUBE_SEARCH_URL,
-        params={
-            "key": YOUTUBE_API_KEY,
-            "part": "snippet",
-            "type": "video",
-            "q": search_string,
-        },
+        params=params,
     ).content
+
     content: dict = json.loads(response_content)
     if content.get("error", None):
         if content["error"].get("code", None) == 403:
@@ -130,6 +167,7 @@ def get_videos_from_youtube(theme: Theme | None = None) -> list[Video] | None:
                     title=v["snippet"]["title"],
                     thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
                     search_string=search_string,
+                    channel_name=v["snippet"]["channelTitle"],
                 )
                 if theme:
                     video.theme = theme
@@ -156,3 +194,29 @@ def get_random_word(lang: str | None = None) -> str:
         lang: str = random.choice(list(DICTIONNARIES.keys()))
     lines = open(DICTIONNARIES[lang]).read().splitlines()
     return random.choice(lines)
+
+
+def get_channel_id(channel_name: str) -> str:
+    """
+    Get YouTube channel ID from channel name/handle using YouTube API
+    """
+    response_content = requests.get(
+        "https://www.googleapis.com/youtube/v3/search",
+        params={
+            "key": YOUTUBE_API_KEY,
+            "part": "snippet",
+            "type": "channel",
+            "q": channel_name,
+            "maxResults": 1,
+        },
+    ).content
+
+    content: dict = json.loads(response_content)
+    if content.get("error", None):
+        logger.error(f"Error getting channel ID: {content.get('error')}")
+        raise Http404("Channel not found")
+
+    if not content.get("items"):
+        raise Http404("Channel not found")
+
+    return content["items"][0]["id"]["channelId"]

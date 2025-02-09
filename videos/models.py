@@ -22,6 +22,7 @@ class Video(models.Model):
     duration = models.IntegerField(null=True)  # in seconds
     best_start = models.IntegerField(null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
+    channel_name = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         db_table = "videos"
