@@ -77,8 +77,11 @@ uv run ruff check --fix && ruff format
 
 ## Endpoints
 
-- `/api/videos/`: Returns a random YouTube ID
-- `/api/videos/{theme_name}`: Returns a random YouTube ID for the given theme
+- `/api/videos/`: Returns a random YouTube video
+- `/api/videos/channel/{channelName}`: Returns a random video from the given channel
+- `/api/videos/theme/{themeName}`: Returns a random video for the given theme
+- `/api/videos/language/{languageCode}`: Returns a random video in the specified language
+- `/api/videos/popular`: Returns a random video filtered by view count (optional min_views and max_views parameters)
 - `/api/docs`: OpenAPI documentation and API info
 
 

@@ -23,6 +23,9 @@ class Video(models.Model):
     best_start = models.IntegerField(null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
     channel_name = models.CharField(max_length=255, null=True, blank=True)
+    view_count = models.BigIntegerField(null=True, blank=True)
+    language_code = models.CharField(max_length=10, null=True, blank=True)
+    published_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = "videos"
