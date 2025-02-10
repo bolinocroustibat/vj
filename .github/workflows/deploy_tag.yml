@@ -57,9 +57,9 @@ jobs:
             cd /home/www/vj-api
             git fetch
             git reset --hard origin/main
-            /usr/local/bin/uv/bin/uv sync
-            /usr/local/bin/uv/bin/uv run /home/www/vj-api/manage.py migrate
-            /usr/local/bin/uv/bin/uv run /home/www/vj-api/manage.py collectstatic --no-input
+            /usr/local/bin/uv/uv sync
+            /usr/local/bin/uv/uv run /home/www/vj-api/manage.py migrate
+            /usr/local/bin/uv/uv run /home/www/vj-api/manage.py collectstatic --no-input
             sudo systemctl restart vj-api.service
 
       - name: Create Sentry release
