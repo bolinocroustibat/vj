@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import locale
 import os
 
 import colorlog
@@ -21,17 +22,55 @@ from sentry_sdk.integrations.django import DjangoIntegration
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Environment settings
+ENVIRONMENT = os.getenv("ENVIRONMENT", "unknown")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+# SECURITY WARNING: keep the django secret key used in production secret!
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
+CORS_ALLOWED_ORIGINS: list[str] = [
+    origin.strip()
+    for origin in str(os.getenv("CORS_ALLOWED_ORIGINS", "")).split(",")
+    if origin.strip()
+]
 
+# Hosts settings
+ALLOWED_HOSTS: list[str] = [
+    host.strip() for host in str(os.getenv("ALLOWED_HOSTS", "")).split(",") if host.strip()
+]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# Database settings
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST", "db"),  # Use 'db' as default for Docker
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+    }
+}
 
+# Nginx proxy settings
+secure_proxy_header = os.getenv("SECURE_PROXY_SSL_HEADER", "")
+if secure_proxy_header:
+    header_name, header_value = secure_proxy_header.split(",")
+    SECURE_PROXY_SSL_HEADER = (header_name.strip(), header_value.strip().strip("'"))
+
+# Locale settings
+try:
+    locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
+except locale.Error:
+    try:
+        locale.setlocale(locale.LC_TIME, "fr_FR")
+    except locale.Error:
+        pass  # Let it fail silently if locale is not available
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -130,21 +169,14 @@ handler.setFormatter(
 logger = colorlog.getLogger()
 logger.addHandler(handler)
 
-# Local settings
-ENVIRONMENT = "unknown"
-try:
-    from .local_settings import *  # noqa
-except Exception as e:
-    logger.error(e)
-    logger.error("Note: local_settings.py not present or invalid. Using default settings.")
-    LOGGING_LEVEL = "DEBUG"
-
+# Load version info from pyproject.toml
 with open("pyproject.toml", "rb") as f:
     pyproject: dict = tomllib.load(f)
 APP_NAME: str = pyproject["project"]["name"]
 DESCRIPTION: str = pyproject["project"]["description"]
 VERSION: str = pyproject["project"]["version"]
 
+# Sentry configuration
 if ENVIRONMENT != "local":
     sentry_sdk.init(
         dsn="https://547ba3ff493c488b93129847d6f2bb4d@o352691.ingest.sentry.io/4503999686508544",
