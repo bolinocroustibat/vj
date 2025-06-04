@@ -1,6 +1,6 @@
 services:
   api:
-    build: .
+    image: ${DOCKERHUB_USERNAME}/vj-api:${TAG:-latest}
     ports:
       - "${PORT:-8000}:${PORT:-8000}"
     environment:

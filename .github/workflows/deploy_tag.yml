@@ -87,6 +87,11 @@ jobs:
 
             # Login to Docker Hub
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+            # Set Docker image variables
+            export DOCKERHUB_USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
+            export TAG="${{ github.ref_name }}"
+
             # Pull the new Docker images
             docker compose pull
             # Restart services (entrypoint.sh will handle migrations and static files)
