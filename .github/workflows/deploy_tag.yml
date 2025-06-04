@@ -72,7 +72,19 @@ jobs:
           script_stop: true
           script: |
             set -e  # Exit on any error
+
+            # Ensure directory exists
+            mkdir -p /home/www/vj-api
             cd /home/www/vj-api
+
+            # Clone or update the repository for configuration files
+            if [ -d .git ]; then
+              git fetch
+              git reset --hard origin/main
+            else
+              git clone https://github.com/bolinocroustibat/vj-api.git .
+            fi
+
             # Login to Docker Hub
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
             # Pull the new Docker images
@@ -82,6 +94,7 @@ jobs:
             docker compose up -d
             # Logout for security
             docker logout
+
             # Verify service is running
             sleep 10  # Give the service time to start
             docker compose ps --format json | grep -q "running" || exit 1
