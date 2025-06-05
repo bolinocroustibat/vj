@@ -1,5 +1,6 @@
-# Use Python 3.13 as base image
-FROM python:3.13-slim
+# Use Python 3.13-alpine as base image
+FROM python:3.13-alpine
+
 # Copy latest uv binary from official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -10,14 +11,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    locales \
-    netcat-traditional \
-    && rm -rf /var/lib/apt/lists/* \
-    && sed -i -e 's/# fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/' /etc/locale.gen \
-    && locale-gen
+RUN apk add --no-cache \
+    build-base \
+    postgresql-dev \
+    musl-locales \
+    musl-locales-lang \
+    && rm -rf /var/cache/apk/*
 
 # Copy the project into the image
 ADD . /app
