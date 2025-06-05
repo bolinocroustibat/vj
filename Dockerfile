@@ -9,14 +9,6 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# Install system dependencies
-RUN apk add --no-cache \
-    build-base \
-    postgresql-dev \
-    musl-locales \
-    musl-locales-lang \
-    && rm -rf /var/cache/apk/*
-
 # Copy the project into the image
 ADD . /app
 
