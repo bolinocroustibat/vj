@@ -6,15 +6,15 @@ on:
       - '*'
 
 jobs:
-  deploy-prod:
-    name: Deploy ${{ github.ref_name }} to prod
+  bump-version:
+    name: Bump version to ${{ github.ref_name }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -32,6 +32,16 @@ jobs:
           commit_user_name: Adrien Carpentier
           commit_user_email: me@adriencarpentier.com
           commit_author: Adrien Carpentier <me@adriencarpentier.com>
+
+  deploy-prod:
+    name: Deploy ${{ github.ref_name }} to prod
+    needs: bump-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Ensure we get the updated version after bump-version job
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -105,7 +115,7 @@ jobs:
 
       - name: Create Sentry release
         if: success()  # Only create Sentry release if deployment succeeded
-        uses: getsentry/action-release@v1.7.0
+        uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: "adrien-carpentier"
