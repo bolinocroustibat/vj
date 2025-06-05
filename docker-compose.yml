@@ -7,11 +7,10 @@ services:
     volumes:
       - static_volume:/app/static
     ports:
-      - "${PORT:-8000}:${PORT:-8000}"
+      - "${API_PORT:-8000}:8000"
     environment:
       # Application settings
       - ENVIRONMENT=${ENVIRONMENT}
-      - PORT=${PORT:-8000}
       - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
 
       # Django settings
@@ -35,7 +34,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "${DB_PORT:-5432}:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=postgres

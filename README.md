@@ -23,18 +23,16 @@ The project includes Docker and Docker Compose configurations. To run with Docke
 
 1. Create a `.env` file in the root directory with the following variables:
 ```env
+# Application settings
 ENVIRONMENT=local
-
-PORT=8000 # Optional: defaults to 8000 if not set
+API_PORT=8000 # Optional: defaults to 8000 if not set
+DB_PORT=5432 # Optional: external port for PostgreSQL, defaults to 5432
+YOUTUBE_API_KEY=your_youtube_api_key_here
 
 DJANGO_SECRET_KEY=your_django_secret_key_here
 
-YOUTUBE_API_KEY=your_youtube_api_key_here
-
 # Database settings
 POSTGRES_DB=vj-api_django
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
 
 # Allowed hosts and CORS
 ALLOWED_HOSTS=127.0.0.1,localhost
@@ -54,13 +52,13 @@ docker compose up --build
 
 The application will be available at:
 - http://localhost:8000 (default port)
-- http://localhost:8002 (if you set PORT=8002 in .env)
+- http://localhost:8002 (if you set API_PORT=8002 in .env)
 
 This will start both the Django application and PostgreSQL database. The setup includes:
 - Persistent database storage using Docker volumes (`postgres_data`)
 - Persistent static files storage (`static_volume`)
 - Automatic database initialization and migrations
-- PostgreSQL database accessible at `localhost:5433` with:
+- PostgreSQL database accessible at `localhost:${DB_PORT}` (defaults to 5432) with:
   - Username: postgres (or value of POSTGRES_USER in .env)
   - Password: postgres (or value of POSTGRES_PASSWORD in .env)
   - Database: vj-api_django (or value of POSTGRES_DB in .env)
@@ -68,10 +66,10 @@ This will start both the Django application and PostgreSQL database. The setup i
 To connect to the database:
 ```bash
 # Using psql command line:
-PGPASSWORD=postgres psql -h localhost -p 5433 -U postgres -d vj-api_django
+PGPASSWORD=postgres psql -h localhost -p ${DB_PORT:-5432} -U postgres -d vj-api_django
 
 # Or using connection URL:
-postgresql://postgres:postgres@localhost:5433/vj-api_django
+postgresql://postgres:postgres@localhost:${DB_PORT:-5432}/vj-api_django
 ```
 
 To completely reset the database (WARNING: this will delete all data):
@@ -95,13 +93,13 @@ docker run --name vj-api-db -e POSTGRES_USER=postgres -e POSTGRES_DB=vj-api_djan
 
 3. Create a `.env` file in the root directory with your configuration:
 ```env
+# Application settings
 ENVIRONMENT=local
-
-PORT=8000 # Optional: defaults to 8000 if not set
+API_PORT=8000 # Optional: defaults to 8000 if not set
+DB_PORT=5432 # Optional: external port for PostgreSQL, defaults to 5432
+YOUTUBE_API_KEY=your_youtube_api_key_here
 
 DJANGO_SECRET_KEY=your_django_secret_key_here
-
-YOUTUBE_API_KEY=your_youtube_api_key_here
 
 # DEBUG should be set to False for production
 DEBUG=False
@@ -109,10 +107,6 @@ LOGGING_LEVEL=INFO
 
 # Database settings
 POSTGRES_DB=vj-api_django
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
 
 # Allowed hosts and CORS
 ALLOWED_HOSTS=127.0.0.1,localhost
