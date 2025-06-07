@@ -1,7 +1,7 @@
 services:
   api:
     container_name: vj-api
-    image: ${DOCKERHUB_USERNAME}/vj-api:${TAG:-latest}
+    image: ghcr.io/${GITHUB_REPOSITORY}:${TAG:-latest}
     build: .
     depends_on:
       - db
