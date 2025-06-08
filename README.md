@@ -103,7 +103,6 @@ DJANGO_SECRET_KEY=your_django_secret_key_here
 
 # DEBUG should be set to False for production
 DEBUG=False
-LOGGING_LEVEL=INFO
 
 # Database settings
 POSTGRES_DB=vj-api_django

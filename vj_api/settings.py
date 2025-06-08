@@ -28,7 +28,6 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # SECURITY WARNING: keep the django secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
@@ -161,6 +160,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Color logging
+LOGGING_LEVEL = "DEBUG" if DEBUG else "INFO"
 handler = colorlog.StreamHandler()
 handler.setFormatter(
     colorlog.ColoredFormatter("%(log_color)s%(levelname)s line %(lineno)s: %(message)s")
