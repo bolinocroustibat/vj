@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import locale
 import os
 
 import colorlog
@@ -24,13 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Environment settings
 ENVIRONMENT = os.getenv("ENVIRONMENT", "unknown")
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv("DEBUG", "False") == "True"
 # SECURITY WARNING: keep the django secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
+CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False") == "True"
 CORS_ALLOWED_ORIGINS: list[str] = [
     origin.strip()
     for origin in str(os.getenv("CORS_ALLOWED_ORIGINS", "")).split(",")
@@ -59,15 +58,6 @@ secure_proxy_header = os.getenv("SECURE_PROXY_SSL_HEADER", "")
 if secure_proxy_header:
     header_name, header_value = secure_proxy_header.split(",")
     SECURE_PROXY_SSL_HEADER = (header_name.strip(), header_value.strip().strip("'"))
-
-# Locale settings
-try:
-    locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
-except locale.Error:
-    try:
-        locale.setlocale(locale.LC_TIME, "fr_FR")
-    except locale.Error:
-        pass  # Let it fail silently if locale is not available
 
 # Application definition
 INSTALLED_APPS = [
@@ -109,8 +99,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = "vj_api.wsgi.application"
 
 
 # Password validation
