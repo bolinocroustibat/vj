@@ -33,27 +33,22 @@ jobs:
           commit_user_email: me@adriencarpentier.com
           commit_author: Adrien Carpentier <me@adriencarpentier.com>
 
-  deploy-prod:
-    name: Deploy ${{ github.ref_name }} to prod
+  build-and-push:
+    name: Build and push Docker image ${{ github.ref_name }}
     needs: bump-version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: main  # Ensure we get the updated version after bump-version job
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image to ghcr.io/${{ github.repository }}
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -61,9 +56,12 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
 
+  deploy:
+    name: Deploy ${{ github.ref_name }} on prod
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
       - name: Execute server commands for deploy
         uses: appleboy/ssh-action@v1
         with:
@@ -94,7 +92,7 @@ jobs:
             # Pull the new Docker images
             docker compose pull
             # Restart services
-            docker compose down
+            docker compose down --remove-orphans
             docker compose up -d
 
             # Verify service is running
