@@ -52,6 +52,12 @@ export interface Config {
 	 * When false, videos play without any visual effects
 	 */
 	vhsEffect?: boolean
+	/**
+	 * Enable grayscale filter on videos
+	 * When true, videos are displayed in black and white
+	 * When false, videos are displayed in full color
+	 */
+	grayscaleFilter?: boolean
 }
 
 export interface Video {

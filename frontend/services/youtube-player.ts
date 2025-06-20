@@ -17,7 +17,8 @@ export class YouTubePlayerManager {
 	private playerLoaded: Set<number> = new Set() // Track which players have loaded videos
 	private onBeatSwitchCallback: (() => void) | null = null
 
-	constructor() {
+	constructor(config: Config) {
+		this.config = config
 		this.loadYouTubeAPI()
 	}
 
@@ -71,26 +72,24 @@ export class YouTubePlayerManager {
 	}
 
 	private async startVideoLoop(): Promise<void> {
-		this.config = await this.loadConfig()
-
 		// Load first two videos
 		try {
 			// Load video on player 1
-			const ytTheme1 = await getTheme(this.config.youtubeThemes)
+			const ytTheme1 = await getTheme(this.config?.youtubeThemes)
 			debugLog(
 				`Loading new video on theme "${ytTheme1}" on player 1...`,
 				this.config,
 			)
-			const video1 = await getVideoFromAPI(this.config.apiHost, ytTheme1)
+			const video1 = await getVideoFromAPI(this.config?.apiHost, ytTheme1)
 			this.startVideo(this.player1, video1)
 
 			// Load video on player 2
-			const ytTheme2 = await getTheme(this.config.youtubeThemes)
+			const ytTheme2 = await getTheme(this.config?.youtubeThemes)
 			debugLog(
 				`Loading new video on theme "${ytTheme2}" on player 2...`,
 				this.config,
 			)
-			const video2 = await getVideoFromAPI(this.config.apiHost, ytTheme2)
+			const video2 = await getVideoFromAPI(this.config?.apiHost, ytTheme2)
 			this.startVideo(this.player2, video2)
 
 			// Start with player 1 displayed
@@ -155,11 +154,6 @@ export class YouTubePlayerManager {
 			default:
 				throw new Error(`Invalid player ID: ${playerId}`)
 		}
-	}
-
-	private async loadConfig(): Promise<Config> {
-		const response = await fetch("config.json")
-		return response.json()
 	}
 
 	private startVideo(player: YT.Player, video: Video): void {

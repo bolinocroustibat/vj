@@ -17,6 +17,13 @@ let youtubeManager: YouTubePlayerManager
 let beatDetector: BeatDetector
 let config: Config | null = null
 
+// Apply grayscale filter based on config
+function applyGrayscaleFilter(config: Config): void {
+	const grayscaleValue = config?.grayscaleFilter ? "1" : "0"
+	document.documentElement.style.setProperty("--grayscale-filter", grayscaleValue)
+	debugLog(`Grayscale filter ${config?.grayscaleFilter ? "enabled" : "disabled"}`, config)
+}
+
 // Initialize the application
 async function initializeApp(): Promise<void> {
 	// Load config first
@@ -30,8 +37,11 @@ async function initializeApp(): Promise<void> {
 	// Load VHS effects if enabled
 	await loadVHSEffects(config)
 
+	// Apply grayscale filter based on config
+	applyGrayscaleFilter(config)
+
 	// Initialize YouTube player manager
-	youtubeManager = new YouTubePlayerManager()
+	youtubeManager = new YouTubePlayerManager(config)
 
 	// Initialize beat detector with main config
 	beatDetector = new BeatDetector(config)

@@ -17,7 +17,7 @@ body {
 	margin: 0 auto 0 auto;
 	width: 100%;
 	height: 100%;
-	filter: grayscale(1);
+	filter: grayscale(var(--grayscale-filter, 1));
 	opacity: 1;
 }
 
@@ -27,7 +27,7 @@ body {
 	margin: 0 auto 0 auto;
 	width: 100%;
 	height: 100%;
-	filter: grayscale(1);
+	filter: grayscale(var(--grayscale-filter, 1));
 	opacity: 0;
 }
 
@@ -37,7 +37,7 @@ body {
 	margin: 0 auto 0 auto;
 	width: 100%;
 	height: 100%;
-	filter: grayscale(1);
+	filter: grayscale(var(--grayscale-filter, 1));
 	opacity: 0;
 }
 
