@@ -22,55 +22,23 @@ This branch is using Django, Django Ninja and PostgreSQL. There is also a deprec
 
 The project includes Docker and Docker Compose configurations. To run with Docker:
 
-1. Create a `.env` file in the root directory with the following variables:
-```env
-# Application settings
-ENVIRONMENT=local
-API_PORT=8000 # Optional: defaults to 8000 if not set
-DB_PORT=5432 # Optional: external port for PostgreSQL, defaults to 5432
-FRONTEND_PORT=4173 # Optional: defaults to 4173 if not set
-YOUTUBE_API_KEY=your_youtube_api_key_here
-
-DJANGO_SECRET_KEY=your_django_secret_key_here
-
-# Database settings
-POSTGRES_DB=vj-api_django
-
-# Allowed hosts and CORS
-ALLOWED_HOSTS=127.0.0.1,localhost
-# CORS settings:
-# - For development: CORS_ORIGIN_ALLOW_ALL can be True
-# - For production: CORS_ORIGIN_ALLOW_ALL should be False and CORS_ALLOWED_ORIGINS must list all allowed domains
-CORS_ORIGIN_ALLOW_ALL=False  # Set to True only for development
-# CORS_ALLOWED_ORIGINS: Add your frontend URLs here
-# - http://localhost:4173 for local frontend development
-CORS_ALLOWED_ORIGINS=http://localhost:4173
-
-# Frontend application settings
-FRONTEND_NEW_VIDEO_REQUEST_DELAY=8 # How often to request new videos (seconds)
-FRONTEND_VIDEO_SWITCH_DELAY=2 # Delay after video loads before switching (seconds)
-FRONTEND_YOUTUBE_THEMES="saucisson,showa era" # Comma-separated list of video themes
-# DEBUG is shared between backend and frontend (see Django core settings above)
-
-# Frontend visual effects settings
-FRONTEND_VHS_EFFECT=true # Enable VHS visual effects overlay
-
-# Frontend beat detection settings
-FRONTEND_BEAT_DETECTION_ENERGY_THRESHOLD=1000 # Minimum audio energy for beat detection
-FRONTEND_BEAT_DETECTION_BASS_THRESHOLD=300 # Minimum bass frequency energy
-FRONTEND_BEAT_DETECTION_BEAT_COOLDOWN=300 # Minimum time between beats (ms)
-FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD=0.99 # Minimum confidence for beat detection
+1. Create a `.env` file in the root directory:
+```bash
+cp .env.example .env
 ```
 
-2. Build and start the containers:
+2. Edit the `.env` file with your configuration values, especially `YOUTUBE_API_KEY`
+
+
+3. Build and start the containers:
 ```bash
 docker compose up --build
 ```
 
 The application will be available at:
-- Backend API: http://localhost:8000 (default port)
-- Frontend: http://localhost:4173 (default port)
-- Database: localhost:5432 (default port)
+- Backend API: http://localhost:8000 (default Django port)
+- Frontend: http://localhost:4173 (default Vite port)
+- Database: localhost:5432 (default PostgreSQL port)
 
 This will start both the Django application, PostgreSQL database, and the frontend application. The setup includes:
 - Persistent database storage using Docker volumes (`postgres_data`)
@@ -101,9 +69,9 @@ docker compose down -v  # The -v flag removes the volumes
 #### Requirements
 
 If you prefer to develop without Docker, you'll also need:
+- [uv](https://docs.astral.sh/uv/) Python package manager
 - Python >= 3.10
 - PostgreSQL >= 17
-- A modern Python package manager like [uv](https://docs.astral.sh/uv/)
 
 #### Setup
 
@@ -114,34 +82,14 @@ If you prefer to run the application without Docker:
 uv sync
 ```
 
-2. Run a PostgreSQL database instance:
-```sh
-docker run --name vj-api-db -e POSTGRES_USER=postgres -e POSTGRES_DB=vj-api_django -p 5432:5432 -d postgres
+2. Install and start PostgreSQL locally, or use a cloud database service
+
+3. Create a `.env` file in the root directory:
+```bash
+cp .env.example .env
 ```
 
-3. Create a `.env` file in the root directory with your configuration:
-```env
-# Application settings
-ENVIRONMENT=local
-API_PORT=8000 # Optional: defaults to 8000 if not set
-DB_PORT=5432 # Optional: external port for PostgreSQL, defaults to 5432
-YOUTUBE_API_KEY=your_youtube_api_key_here
-
-DJANGO_SECRET_KEY=your_django_secret_key_here
-
-# DEBUG should be set to False for production
-DEBUG=False
-
-# Database settings
-POSTGRES_DB=vj-api_django
-
-# Allowed hosts and CORS
-ALLOWED_HOSTS=127.0.0.1,localhost
-CORS_ORIGIN_ALLOW_ALL=False  # Set to True only for development
-# CORS_ALLOWED_ORIGINS: Add your frontend URLs here
-# - http://localhost:8080 for local Vue.js development
-CORS_ALLOWED_ORIGINS=http://localhost:8080
-```
+Edit the `.env` file with your configuration values, especially `YOUTUBE_API_KEY`
 
 4. Migrate the database:
 ```bash
