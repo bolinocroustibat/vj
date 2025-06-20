@@ -7,7 +7,7 @@ from django.http import Http404
 from ninja import Router
 
 from videos.models import Theme, Video
-from vj_api.helpers import convert_youtube_duration_to_seconds
+from vj_api.helpers import convert_youtube_duration_to_seconds, get_related_words
 from vj_api.settings import YOUTUBE_API_KEY, logger
 
 router = Router(tags=["videos"])
@@ -74,7 +74,7 @@ def return_random_video_info(theme: Theme | None = None) -> dict:
         video = random.choice(videos)
     else:
         try:
-            videos = Video.objects.all()
+            videos = list(Video.objects.all())
             video = random.choice(videos)
         except Exception:
             raise Http404
@@ -112,7 +112,7 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
                     # to be sure (in case the response is not ordered correctly), we look in the list for the video with the corresponding youtube_id and only update it on that criteria
                     if video.youtube_id == item["id"]:
                         duration_yt: str = item["contentDetails"]["duration"]
-                        video.duration: int = convert_youtube_duration_to_seconds(duration_yt)
+                        video.duration = convert_youtube_duration_to_seconds(duration_yt)
                         try:
                             video.save()
                         except IntegrityError as e:
@@ -133,49 +133,80 @@ def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
 def get_videos_from_youtube(
     theme: Theme | None = None, channel: str | None = None
 ) -> list[Video] | None:
-    search_string: str = get_random_word() if not channel else ""
+    search_string: str = get_random_word() if not channel and not theme else ""
     if theme:
-        search_string = f"{theme.name} {search_string}"
+        # Get related words for the theme
+        related_words = get_related_words(theme.name)
+
+        # Randomly choose between theme-only and theme + related word
+        if related_words and random.choice([True, False]):
+            related_word = random.choice(related_words)
+            search_string = f"{theme.name} {related_word}"
+        else:
+            search_string = theme.name
+
+    # Randomly choose search order for variety
+    search_orders = ["relevance", "date", "viewCount", "rating"]
+    random_order: str = random.choice(search_orders)
 
     params = {
         "key": YOUTUBE_API_KEY,
         "part": "snippet",
         "type": "video",
         "q": search_string,
+        "maxResults": 50,  # Maximum allowed by YouTube API
+        "order": random_order,
     }
 
     if channel:
         params["channelId"] = get_channel_id(channel)
 
-    response_content = requests.get(
-        YOUTUBE_SEARCH_URL,
-        params=params,
-    ).content
+    all_videos: list = []
+    next_page_token = None
+    max_pages = 5  # Limit to prevent excessive API usage
 
-    content: dict = json.loads(response_content)
-    if content.get("error", None):
-        if content["error"].get("code", None) == 403:
-            logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+    for page in range(max_pages):
+        if next_page_token:
+            params["pageToken"] = next_page_token
+
+        response_content = requests.get(
+            YOUTUBE_SEARCH_URL,
+            params=params,
+        ).content
+
+        content: dict = json.loads(response_content)
+        if content.get("error", None):
+            if content["error"].get("code", None) == 403:
+                logger.error('Forbidden by YouTube: "{}"'.format(content["error"]["message"]))
+            else:
+                logger.error('Error: "{}"'.format(content["error"]))
+            break
         else:
-            logger.error('Error: "{}"'.format(content["error"]))
-    else:
-        videos: list = []
-        for v in content["items"]:
-            try:
-                video = Video(
-                    youtube_id=v["id"]["videoId"],
-                    title=v["snippet"]["title"],
-                    thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
-                    search_string=search_string,
-                    channel_name=v["snippet"]["channelTitle"],
-                )
-                if theme:
-                    video.theme = theme
-                videos.append(video)
-                logger.info(f'Got a new video ID "{video.title}" from YouTube')
-            except Exception as e:
-                logger.error(str(e))
-        return videos
+            page_videos: list = []
+            for v in content["items"]:
+                try:
+                    video = Video(
+                        youtube_id=v["id"]["videoId"],
+                        title=v["snippet"]["title"],
+                        thumbnail=v["snippet"]["thumbnails"]["high"]["url"],
+                        search_string=search_string,
+                        channel_name=v["snippet"]["channelTitle"],
+                    )
+                    if theme:
+                        video.theme = theme
+                    page_videos.append(video)
+                    logger.info(f'Got a new video ID "{video.title}" from YouTube')
+                except Exception as e:
+                    logger.error(str(e))
+
+            all_videos.extend(page_videos)
+
+            # Check if there are more pages
+            next_page_token = content.get("nextPageToken")
+            if not next_page_token:
+                break
+
+    return all_videos if all_videos else None
 
 
 def populate_db(videos: list[Video]) -> None:
