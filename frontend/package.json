@@ -1,0 +1,19 @@
+{
+	"name": "vj",
+	"module": "index.ts",
+	"type": "module",
+	"scripts": {
+		"dev": "bunx --bun vite",
+		"build": "bunx --bun vite build",
+		"preview": "bunx --bun vite preview",
+		"check": "biome check --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.0.0",
+		"@types/bun": "latest",
+		"vite": "^5.4.19"
+	},
+	"peerDependencies": {
+		"typescript": "^5.7.3"
+	}
+}

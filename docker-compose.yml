@@ -1,8 +1,22 @@
 services:
+  db:
+    container_name: vj-db
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+
   api:
     container_name: vj-api
     image: ghcr.io/bolinocroustibat/vj-api:${TAG:-latest}
-    build: .
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     depends_on:
       - db
     volumes:
@@ -29,17 +43,16 @@ services:
       # Nginx proxy settings
       - SECURE_PROXY_SSL_HEADER=${SECURE_PROXY_SSL_HEADER}
 
-  db:
-    container_name: vj-db
-    image: postgres:17
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  frontend:
+    container_name: vj-frontend
+    image: vj-frontend:${TAG:-latest}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "${DB_PORT:-5432}:5432"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - "${FRONTEND_PORT:-4173}:4173"
+    depends_on:
+      - api
 
 volumes:
   postgres_data:

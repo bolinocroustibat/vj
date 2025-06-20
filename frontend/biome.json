@@ -1,0 +1,10 @@
+{
+	"files": {
+		"includes": ["**", "!vhs/**"]
+	},
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded"
+		}
+	}
+}
