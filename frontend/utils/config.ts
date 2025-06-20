@@ -6,9 +6,11 @@ import type { Config } from "../types/config.js"
  */
 export async function loadConfig(): Promise<Config> {
 	// Parse YouTube themes from comma-separated string
-	const youtubeThemesStr =
-		import.meta.env.VITE_YOUTUBE_THEMES || ""
-	const youtubeThemes = youtubeThemesStr.split(",").map((theme) => theme.trim()).filter(theme => theme.length > 0)
+	const youtubeThemesStr = import.meta.env.VITE_YOUTUBE_THEMES || ""
+	const youtubeThemes = youtubeThemesStr
+		.split(",")
+		.map((theme) => theme.trim())
+		.filter((theme) => theme.length > 0)
 
 	// Parse beat detection config
 	const beatDetection = {
@@ -31,6 +33,8 @@ export async function loadConfig(): Promise<Config> {
 		debug: import.meta.env.VITE_DEBUG === "true",
 		vhsEffect: import.meta.env.VITE_VHS_EFFECT === "true",
 		grayscaleFilter: import.meta.env.VITE_GRAYSCALE_FILTER === "true",
+		youtubePlaybackRate:
+			Number(import.meta.env.VITE_YOUTUBE_PLAYBACK_RATE) || 1,
 		beatDetection,
 	}
 

@@ -20,8 +20,14 @@ let config: Config | null = null
 // Apply grayscale filter based on config
 function applyGrayscaleFilter(config: Config): void {
 	const grayscaleValue = config?.grayscaleFilter ? "1" : "0"
-	document.documentElement.style.setProperty("--grayscale-filter", grayscaleValue)
-	debugLog(`Grayscale filter ${config?.grayscaleFilter ? "enabled" : "disabled"}`, config)
+	document.documentElement.style.setProperty(
+		"--grayscale-filter",
+		grayscaleValue,
+	)
+	debugLog(
+		`Grayscale filter ${config?.grayscaleFilter ? "enabled" : "disabled"}`,
+		config,
+	)
 }
 
 // Initialize the application

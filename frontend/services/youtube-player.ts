@@ -169,7 +169,7 @@ export class YouTubePlayerManager {
 		}
 
 		player.loadVideoById(ytID, start)
-		player.setPlaybackRate(0.25)
+		player.setPlaybackRate(this.config?.youtubePlaybackRate || 0.25)
 	}
 
 	private onPlayerStateChange(event: YT.OnStateChangeEvent): void {

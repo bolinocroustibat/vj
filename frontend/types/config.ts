@@ -58,6 +58,7 @@ export interface Config {
 	 * When false, videos are displayed in full color
 	 */
 	grayscaleFilter?: boolean
+	youtubePlaybackRate: number
 }
 
 export interface Video {
