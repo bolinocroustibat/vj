@@ -103,8 +103,16 @@ jobs:
               exit 1
             fi
 
+  create-sentry-release:
+    name: Create Sentry release
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: success()  # Only create Sentry release if deployment succeeded
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Create Sentry release
-        if: success()  # Only create Sentry release if deployment succeeded
         uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
