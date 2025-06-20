@@ -74,7 +74,15 @@ def return_random_video_info(theme: Theme | None = None) -> dict:
         video = random.choice(videos)
     else:
         try:
-            videos = list(Video.objects.all())
+            if theme:
+                # Only get videos from the specific theme
+                videos = list(Video.objects.filter(theme=theme))
+            else:
+                # For no theme, get all videos
+                videos = list(Video.objects.all())
+
+            if not videos:
+                raise Http404("No videos found for this theme")
             video = random.choice(videos)
         except Exception:
             raise Http404
