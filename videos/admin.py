@@ -30,7 +30,9 @@ class VideoAdmin(admin.ModelAdmin):
     list_filter = ("theme",)
     search_fields = (
         "title",
-        "get_theme_name",
+        "theme__name",
+        "youtube_id",
+        "search_string",
     )
 
     def get_theme_name(self, obj):
