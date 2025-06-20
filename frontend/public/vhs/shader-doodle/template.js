@@ -1,21 +1,21 @@
 export default {
-  render(w, h) {
-    return `${this.css(w, h)}
-            ${this.html()}`;
-  },
+	render(w, h) {
+		return `${this.css(w, h)}
+            ${this.html()}`
+	},
 
-  map(scope) {
-    return {
-      canvas: scope.querySelector('canvas'),
-    };
-  },
+	map(scope) {
+		return {
+			canvas: scope.querySelector("canvas"),
+		}
+	},
 
-  html(node) {
-    return `<canvas></canvas>`;
-  },
+	html(node) {
+		return `<canvas></canvas>`
+	},
 
-  css(w, h) {
-    return `<style>
+	css(w, h) {
+		return `<style>
       :host {
         position: relative;
         display: inline-block;
@@ -30,6 +30,6 @@ export default {
         width: 100%;
         border-radius: inherit;
       }
-    </style>`;
-  },
-};
+    </style>`
+	},
+}

@@ -122,12 +122,12 @@ export class YouTubePlayerManager {
 
 			// Load new video on the loading player
 			try {
-				const ytTheme = await getTheme(this.config!.youtubeThemes)
+				const ytTheme = await getTheme(this.config?.youtubeThemes)
 				debugLog(
 					`Loading new video on theme "${ytTheme}" on player ${this.loadingPlayer}...`,
 					this.config,
 				)
-				const video = await getVideoFromAPI(this.config!.apiHost, ytTheme)
+				const video = await getVideoFromAPI(this.config?.apiHost, ytTheme)
 				this.startVideo(this.getPlayer(this.loadingPlayer), video)
 			} catch (error) {
 				debugLog(
@@ -205,7 +205,7 @@ export class YouTubePlayerManager {
 
 					if (availablePlayers.length === 0) {
 						debugLog(
-							`⚠️ No other players with loaded videos available`,
+							"⚠️ No other players with loaded videos available",
 							this.config,
 						)
 						return
@@ -298,7 +298,7 @@ export class YouTubePlayerManager {
 
 		if (availablePlayers.length === 0) {
 			debugLog(
-				`⚠️ No other players with loaded videos available for beat switch`,
+				"⚠️ No other players with loaded videos available for beat switch",
 				this.config,
 			)
 			return

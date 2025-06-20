@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Environment settings
 ENVIRONMENT = os.getenv("ENVIRONMENT", "unknown")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # SECURITY WARNING: keep the django secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")

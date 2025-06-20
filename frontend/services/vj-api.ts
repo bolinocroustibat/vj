@@ -25,14 +25,12 @@ export async function getVideoFromAPI(
 		.then((response) => {
 			if (response.ok) {
 				return response.json()
-			} else {
-				if (response.status === 404) {
-					throw new Error(
-						`No video available with theme "${ytTheme}" in API now`,
-					)
-				}
-				throw new Error("Unknown API error")
 			}
+
+			if (response.status === 404) {
+				throw new Error(`No video available with theme "${ytTheme}" in API now`)
+			}
+			throw new Error("Unknown API error")
 		})
 		.then((json: Video) => {
 			return json

@@ -1,5 +1,6 @@
 import type { AudioMetrics, MicrophoneStatus } from "../types/audio.js"
-import { debugError, debugLog } from "../utils/helpers.js"
+import type { Config } from "../types/config.js"
+import { debugLog } from "../utils/helpers.js"
 
 export class MicrophoneManager {
 	private audioContext: AudioContext | null = null
@@ -9,7 +10,7 @@ export class MicrophoneManager {
 	private isListening = false
 	private animationId: number | null = null
 	private onAudioDataCallback: ((metrics: AudioMetrics) => void) | null = null
-	private config: any = null // We'll need to pass config from parent
+	private config: Config | null = null // We'll need to pass config from parent
 
 	async requestMicrophoneAccess(): Promise<boolean> {
 		try {

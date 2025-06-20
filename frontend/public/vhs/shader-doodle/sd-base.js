@@ -1,17 +1,17 @@
-import Renderer from './webgl/Renderer.js';
+import Renderer from "./webgl/Renderer.js"
 
 class SDBaseElement extends HTMLElement {
-  get renderer() {
-    return Renderer.singleton();
-  }
+	get renderer() {
+		return Renderer.singleton()
+	}
 
-  get name() {
-    return this.getAttribute('name');
-  }
+	get name() {
+		return this.getAttribute("name")
+	}
 
-  set name(val) {
-    this.setAttribute('name', val);
-  }
+	set name(val) {
+		this.setAttribute("name", val)
+	}
 }
 
-export default SDBaseElement;
+export default SDBaseElement

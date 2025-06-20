@@ -45,6 +45,21 @@ CORS_ORIGIN_ALLOW_ALL=False  # Set to True only for development
 # CORS_ALLOWED_ORIGINS: Add your frontend URLs here
 # - http://localhost:4173 for local frontend development
 CORS_ALLOWED_ORIGINS=http://localhost:4173
+
+# Frontend application settings
+FRONTEND_NEW_VIDEO_REQUEST_DELAY=8 # How often to request new videos (seconds)
+FRONTEND_VIDEO_SWITCH_DELAY=2 # Delay after video loads before switching (seconds)
+FRONTEND_YOUTUBE_THEMES="saucisson,showa era" # Comma-separated list of video themes
+# DEBUG is shared between backend and frontend (see Django core settings above)
+
+# Frontend visual effects settings
+FRONTEND_VHS_EFFECT=true # Enable VHS visual effects overlay
+
+# Frontend beat detection settings
+FRONTEND_BEAT_DETECTION_ENERGY_THRESHOLD=1000 # Minimum audio energy for beat detection
+FRONTEND_BEAT_DETECTION_BASS_THRESHOLD=300 # Minimum bass frequency energy
+FRONTEND_BEAT_DETECTION_BEAT_COOLDOWN=300 # Minimum time between beats (ms)
+FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD=0.99 # Minimum confidence for beat detection
 ```
 
 2. Build and start the containers:

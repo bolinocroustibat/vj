@@ -1,10 +1,10 @@
 export default (uniform, toy, prop) => {
-  if (!toy) return uniform[prop];
+	if (!toy) return uniform[prop]
 
-  const toyprop = `toy${prop}`;
-  if (uniform.hasOwnProperty(toyprop)) {
-    return uniform[toyprop];
-  }
+	const toyprop = `toy${prop}`
+	if (Object.hasOwn(uniform, toyprop)) {
+		return uniform[toyprop]
+	}
 
-  return uniform[prop];
-};
+	return uniform[prop]
+}

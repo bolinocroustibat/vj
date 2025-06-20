@@ -30,7 +30,7 @@ export function createMicrophoneButton(): HTMLButtonElement {
 export function debugLog(
 	message: string,
 	config: Config | null,
-	...args: any[]
+	...args: unknown[]
 ): void {
 	if (config?.debug) {
 		console.log(message, ...args)

@@ -46,6 +46,12 @@ export interface Config {
 		 */
 		confidenceThreshold: number
 	}
+	/**
+	 * Enable VHS visual effects overlay
+	 * When true, applies retro VHS-style visual effects to the video
+	 * When false, videos play without any visual effects
+	 */
+	vhsEffect?: boolean
 }
 
 export interface Video {

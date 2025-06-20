@@ -1,6 +1,6 @@
 {
 	"files": {
-		"includes": ["**", "!vhs/**"]
+		"ignore": ["public/**", "dist/**"]
 	},
 	"javascript": {
 		"formatter": {

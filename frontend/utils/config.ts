@@ -1,24 +1,38 @@
 import type { Config } from "../types/config.js"
 
 /**
- * Load configuration with Docker-optimized API host
- * In Docker environments, the API host is always http://api:8000
+ * Load configuration from Vite environment variables
+ * Environment variables are injected by Docker Compose
  */
 export async function loadConfig(): Promise<Config> {
-	// Try to load base config from file
-	let baseConfig: Config
-	try {
-		const response = await fetch("/config.json")
-		baseConfig = await response.json()
-	} catch (error) {
-		console.error("Failed to load config.json:", error)
-		throw new Error("Could not load configuration")
+	// Parse YouTube themes from comma-separated string
+	const youtubeThemesStr =
+		import.meta.env.VITE_YOUTUBE_THEMES || "saucisson,showa era"
+	const youtubeThemes = youtubeThemesStr.split(",").map((theme) => theme.trim())
+
+	// Parse beat detection config
+	const beatDetection = {
+		energyThreshold:
+			Number(import.meta.env.VITE_BEAT_DETECTION_ENERGY_THRESHOLD) || 1000,
+		bassThreshold:
+			Number(import.meta.env.VITE_BEAT_DETECTION_BASS_THRESHOLD) || 300,
+		beatCooldown:
+			Number(import.meta.env.VITE_BEAT_DETECTION_BEAT_COOLDOWN) || 300,
+		confidenceThreshold:
+			Number(import.meta.env.VITE_BEAT_DETECTION_CONFIDENCE_THRESHOLD) || 0.99,
 	}
 
-	// Override apiHost for Docker environment
-	// The API service is always available at http://api:8000 in Docker Compose
-	baseConfig.apiHost = "http://api:8000"
-	console.log(`Using Docker API host: ${baseConfig.apiHost}`)
+	const config: Config = {
+		newVideoRequestDelay:
+			Number(import.meta.env.VITE_NEW_VIDEO_REQUEST_DELAY) || 8,
+		videoSwitchDelay: Number(import.meta.env.VITE_VIDEO_SWITCH_DELAY) || 2,
+		youtubeThemes,
+		apiHost: "http://api:8000", // Always use Docker internal network
+		debug: import.meta.env.VITE_DEBUG === "true",
+		vhsEffect: import.meta.env.VITE_VHS_EFFECT === "true",
+		beatDetection,
+	}
 
-	return baseConfig
+	console.log("Loaded config from environment variables:", config)
+	return config
 }

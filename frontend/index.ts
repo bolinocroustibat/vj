@@ -1,4 +1,5 @@
 import { BeatDetector } from "./services/beat-detector.js"
+import { loadVHSEffects } from "./services/vhs-effects.js"
 import { YouTubePlayerManager } from "./services/youtube-player.js"
 import type { Config } from "./types/config.js"
 import { loadConfig } from "./utils/config.js"
@@ -25,6 +26,9 @@ async function initializeApp(): Promise<void> {
 		console.error("Failed to load config:", error)
 		return
 	}
+
+	// Load VHS effects if enabled
+	await loadVHSEffects(config)
 
 	// Initialize YouTube player manager
 	youtubeManager = new YouTubePlayerManager()
