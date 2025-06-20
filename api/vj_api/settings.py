@@ -53,11 +53,8 @@ DATABASES = {
     }
 }
 
-# Nginx proxy settings
-secure_proxy_header = os.getenv("SECURE_PROXY_SSL_HEADER", "")
-if secure_proxy_header:
-    header_name, header_value = secure_proxy_header.split(",")
-    SECURE_PROXY_SSL_HEADER = (header_name.strip(), header_value.strip().strip("'"))
+# Nginx proxy settings - to make Django trusts the https from the Nginx proxy
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definition
 INSTALLED_APPS = [

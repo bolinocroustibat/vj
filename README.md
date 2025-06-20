@@ -29,6 +29,7 @@ cp .env.example .env
 
 2. Edit the `.env` file with your configuration values, especially `YOUTUBE_API_KEY`
 
+**Note**: CORS and host settings have sensible defaults for Docker environments. You only need to configure them if you have specific requirements.
 
 3. Build and start the containers:
 ```bash
