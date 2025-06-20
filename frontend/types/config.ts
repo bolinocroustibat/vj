@@ -57,7 +57,7 @@ export interface Config {
 	 * When true, videos are displayed in black and white
 	 * When false, videos are displayed in full color
 	 */
-	grayscaleFilter?: boolean
+	grayscale?: boolean
 	youtubePlaybackRate: number
 }
 

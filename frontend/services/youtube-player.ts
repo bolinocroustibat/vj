@@ -15,6 +15,7 @@ export class YouTubePlayerManager {
 	private isInitialized = false // Track if initial setup is complete
 	private config: Config | null = null
 	private playerLoaded: Set<number> = new Set() // Track which players have loaded videos
+	private playerThemes: Map<number, string> = new Map() // Track theme for each player
 	private onBeatSwitchCallback: (() => void) | null = null
 
 	constructor(config: Config) {
@@ -82,6 +83,7 @@ export class YouTubePlayerManager {
 			)
 			const video1 = await getVideoFromAPI(this.config?.apiHost, ytTheme1)
 			this.startVideo(this.player1, video1)
+			this.playerThemes.set(1, ytTheme1)
 
 			// Load video on player 2
 			const ytTheme2 = await getTheme(this.config?.youtubeThemes)
@@ -91,6 +93,7 @@ export class YouTubePlayerManager {
 			)
 			const video2 = await getVideoFromAPI(this.config?.apiHost, ytTheme2)
 			this.startVideo(this.player2, video2)
+			this.playerThemes.set(2, ytTheme2)
 
 			// Start with player 1 displayed
 			this.currentDisplayPlayer = 1
@@ -128,6 +131,7 @@ export class YouTubePlayerManager {
 				)
 				const video = await getVideoFromAPI(this.config?.apiHost, ytTheme)
 				this.startVideo(this.getPlayer(this.loadingPlayer), video)
+				this.playerThemes.set(this.loadingPlayer, ytTheme)
 			} catch (error) {
 				debugLog(
 					`❌ Error loading video on player ${this.loadingPlayer}:`,
@@ -273,7 +277,7 @@ export class YouTubePlayerManager {
 			document.body.appendChild(overlay)
 		}
 
-		overlay.textContent = `Player ${this.currentDisplayPlayer}`
+		overlay.textContent = `Player ${this.currentDisplayPlayer} - Theme: ${this.playerThemes.get(this.currentDisplayPlayer) || "Unknown"}`
 	}
 
 	// Add method to trigger beat-based switching
