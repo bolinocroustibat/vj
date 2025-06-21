@@ -42,7 +42,7 @@ services:
 
   frontend:
     container_name: vj-frontend
-    image: vj-frontend:${TAG:-latest}
+    image: ghcr.io/bolinocroustibat/vj-frontend:${TAG:-latest}
     build:
       context: ./frontend
       dockerfile: Dockerfile

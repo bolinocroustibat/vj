@@ -40,7 +40,7 @@ jobs:
           commit_author: Adrien Carpentier <me@adriencarpentier.com>
 
   build-and-push:
-    name: Build and push Docker image ${{ github.ref_name }}
+    name: Build and push Docker images ${{ github.ref_name }}
     needs: bump-version
     runs-on: ubuntu-latest
     steps:
@@ -54,14 +54,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image to ghcr.io/${{ github.repository }}
+      - name: Build and push api Docker images to ghcr.io/${{ github.repository }}
         uses: docker/build-push-action@v5
         with:
           context: ./api
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/bolinocroustibat/vj-api:latest
+            ghcr.io/bolinocroustibat/vj-api:${{ github.ref_name }}
+
+      - name: Build and push frontend Docker images to ghcr.io/${{ github.repository }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ghcr.io/bolinocroustibat/vj-frontend:latest
+            ghcr.io/bolinocroustibat/vj-frontend:${{ github.ref_name }}
 
   deploy:
     name: Deploy ${{ github.ref_name }} on prod
