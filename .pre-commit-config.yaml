@@ -8,11 +8,24 @@ repos:
       - id: trailing-whitespace
       - id: check-added-large-files
 
+  # Python linting and formatting (for /api)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.12 # Ruff version
+    rev: v0.11.12
     hooks:
-      # Run the linter
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix, --extend-select, I]
-      # Run the formatter
+        files: ^api/
       - id: ruff-format
+        files: ^api/
+
+  # # Biome for frontend (JavaScript/TypeScript)
+  # - repo: local
+  #   hooks:
+  #     - id: local-biome-check
+  #       name: biome check
+  #       entry: bunx @biomejs/biome check --write .
+  #       language: system
+  #       types: [file]
+  #       files: ^frontend/(?!vhs/).*
+  #       working_directory: frontend
+  #       pass_filenames: false

@@ -1,0 +1,65 @@
+body {
+	display: block;
+	margin: 0px;
+	background-color: #111;
+	height: 100vh;
+}
+
+#countdown {
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+
+#player1 {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(var(--grayscale-filter, 1));
+	opacity: 1;
+}
+
+#player2 {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(var(--grayscale-filter, 1));
+	opacity: 0;
+}
+
+#player3 {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(var(--grayscale-filter, 1));
+	opacity: 0;
+}
+
+shader-doodle {
+	display: block;
+	position: absolute;
+	margin: 0 auto 0 auto;
+	width: 100%;
+	height: 100%;
+	opacity: 0.5;
+}
+
+#debug-overlay {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	z-index: 10000;
+	font-size: 48px;
+	font-weight: bold;
+	color: red;
+	background: rgba(0, 0, 0, 0.8);
+	padding: 10px 20px;
+	border-radius: 10px;
+	font-family: monospace;
+}
