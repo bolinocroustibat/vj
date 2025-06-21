@@ -86,8 +86,9 @@ dmypy.json
 node_modules/
 dist/
 
-# VS Code
+# IDE
 .vscode/
+.cursor/
 
 # Ruff
 .ruff_cache
