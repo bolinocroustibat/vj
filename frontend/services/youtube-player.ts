@@ -17,6 +17,9 @@ export class YouTubePlayerManager {
 	private playerLoaded: Set<number> = new Set() // Track which players have loaded videos
 	private playerThemes: Map<number, string> = new Map() // Track theme for each player
 	private onBeatSwitchCallback: (() => void) | null = null
+	private isRequestingVideo = false // Prevent concurrent video requests
+	private videoRequestInterval: ReturnType<typeof setInterval> | null = null // Store interval ID for cleanup
+	private playersInitialized = false // Prevent multiple player initializations
 
 	constructor(config: Config) {
 		this.config = config
@@ -24,6 +27,13 @@ export class YouTubePlayerManager {
 	}
 
 	private loadYouTubeAPI(): void {
+		// Check if YouTube API script is already loaded
+		if (
+			document.querySelector('script[src="https://www.youtube.com/iframe_api"]')
+		) {
+			return
+		}
+
 		const tag = document.createElement("script")
 		tag.src = "https://www.youtube.com/iframe_api"
 		const firstScriptTag = document.getElementsByTagName("script")[0]
@@ -31,6 +41,12 @@ export class YouTubePlayerManager {
 	}
 
 	initializePlayers(): void {
+		// Prevent multiple initializations
+		if (this.playersInitialized) {
+			debugLog("Players already initialized, skipping...", this.config)
+			return
+		}
+
 		this.player1 = new window.YT.Player("player1", {
 			playerVars: { autoplay: 1, controls: 0, mute: 1 },
 			events: {
@@ -54,6 +70,8 @@ export class YouTubePlayerManager {
 				onStateChange: this.onPlayerStateChange.bind(this),
 			},
 		})
+
+		this.playersInitialized = true
 	}
 
 	private onPlayerReady(event: YT.PlayerEvent): void {
@@ -114,7 +132,18 @@ export class YouTubePlayerManager {
 		}
 
 		// Set up interval for requesting new videos
-		setInterval(async () => {
+		this.videoRequestInterval = setInterval(async () => {
+			// Prevent concurrent video requests
+			if (this.isRequestingVideo) {
+				debugLog(
+					`⚠️ Skipping video request for player ${this.loadingPlayer} - previous request still in progress`,
+					this.config,
+				)
+				return
+			}
+
+			this.isRequestingVideo = true
+
 			// Remove the loading player from loaded set since it's starting to load new video
 			this.playerLoaded.delete(this.loadingPlayer)
 			debugLog(
@@ -138,6 +167,10 @@ export class YouTubePlayerManager {
 					this.config,
 					error,
 				)
+				// Add the player back to loaded set if request failed
+				this.playerLoaded.add(this.loadingPlayer)
+			} finally {
+				this.isRequestingVideo = false
 			}
 		}, this.config?.newVideoRequestDelay * 1000)
 
@@ -315,5 +348,13 @@ export class YouTubePlayerManager {
 			this.config,
 		)
 		this.updateDebugOverlay()
+	}
+
+	// Cleanup method to clear intervals
+	cleanup(): void {
+		if (this.videoRequestInterval) {
+			clearInterval(this.videoRequestInterval)
+			this.videoRequestInterval = null
+		}
 	}
 }

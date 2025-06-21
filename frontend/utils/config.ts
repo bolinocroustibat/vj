@@ -14,10 +14,14 @@ export async function loadConfig(): Promise<Config> {
 
 	// Parse beat detection config
 	const beatDetection = {
-		energyThreshold: Number(import.meta.env.VITE_BEAT_DETECTION_ENERGY_THRESHOLD),
+		energyThreshold: Number(
+			import.meta.env.VITE_BEAT_DETECTION_ENERGY_THRESHOLD,
+		),
 		bassThreshold: Number(import.meta.env.VITE_BEAT_DETECTION_BASS_THRESHOLD),
 		beatCooldown: Number(import.meta.env.VITE_BEAT_DETECTION_BEAT_COOLDOWN),
-		confidenceThreshold: Number(import.meta.env.VITE_BEAT_DETECTION_CONFIDENCE_THRESHOLD),
+		confidenceThreshold: Number(
+			import.meta.env.VITE_BEAT_DETECTION_CONFIDENCE_THRESHOLD,
+		),
 	}
 
 	const config: Config = {
