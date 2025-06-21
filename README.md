@@ -1,6 +1,6 @@
-# Automatic Video Jockey API
+# Automatic Video Jockey
 
-A Video Jockey (VJ) system consisting of a backend API that provides random YouTube videos by theme, and a frontend webapp that creates an automatic video mixing experience with beat detection and smooth transitions.
+A Video Jockey (VJ) system consisting of a backend API that provides random YouTube videos by theme without depleting the YouTube API quota, and a frontend webapp that automatically mix videos on beat detection, with some style effects.
 
 [**Backend API**](#api): Provides a random YouTube video ID according to an optional given theme, and stores cached YouTube IDs in a database for later usage without depleting the YouTube API quota.
 
@@ -14,9 +14,9 @@ This branch is using Django, Django Ninja and PostgreSQL. There is also a deprec
 
 #### Requirements
 
+- A YouTube API v3 key
 - Docker Engine >= 24.0
 - Docker Compose >= 2.0
-- A YouTube API v3 key
 
 #### Setup
 
@@ -161,38 +161,46 @@ A stylized random Video Jockey webapp playing randomly selected YouTube video cl
 
 ### Configuration
 
-Copy `config.example.json` to `config.json` and modify the settings as needed.
+The frontend is configured through environment variables that are passed to the Docker container. These can be set in your `.env` file or directly in the `docker-compose.yml` file.
 
 #### Configuration Options
 
-- `apiHost`: _string_ (URL). The full URL of the API providing an unlimited amount of YouTube IDs. Prefer one that doesn't deplete the YouTube API quota.
+- `FRONTEND_NEW_VIDEO_REQUEST_DELAY`: _integer_ (seconds), how often to request new videos from the API. The actual video switching happens automatically when videos finish loading. Default: 8
 
-- `newVideoRequestDelay`: _integer_ (seconds), how often to request new videos from the API. The actual video switching happens automatically when videos finish loading.
+- `FRONTEND_VIDEO_SWITCH_DELAY`: _integer_ (seconds), delay after a video finishes loading before switching to it. This allows YouTube's title overlay to disappear for a smoother experience. Default: 2
 
-- `videoSwitchDelay`: _integer_ (seconds), delay after a video finishes loading before switching to it. This allows YouTube's title overlay to disappear for a smoother experience.
+- `FRONTEND_YOUTUBE_THEMES`: _string_ (comma-separated), themes of the requested videos. Leave empty for completely randomly selected videos. Default: ""
 
-- `youtubeThemes`: _list_ of _string_. Themes of the requested videos. Also accepts `null` as element of list if you want a completely randomly selected video.
+- `FRONTEND_DEBUG`: _boolean_, enables debug overlay and additional console logging. Default: false
 
-- `debug`: _boolean_ (optional), enables debug overlay and additional console logging.
+- `FRONTEND_VHS_EFFECT`: _boolean_, enables VHS visual effects overlay. Default: true
 
-- `beatDetection`: _object_ (optional), configuration for microphone-based beat detection:
-  - `energyThreshold`: _integer_, minimum audio energy level to consider a beat (default: 200)
-  - `bassThreshold`: _integer_, minimum bass frequency energy to consider a beat (default: 150)
-  - `beatCooldown`: _integer_ (milliseconds), minimum time between detected beats (default: 200)
+- `FRONTEND_GRAYSCALE`: _boolean_, enables grayscale filter on videos. Default: true
 
+- `FRONTEND_YOUTUBE_PLAYBACK_RATE`: _number_, playback rate for YouTube videos. Default: 1
+
+- `FRONTEND_BEAT_DETECTION_ENERGY_THRESHOLD`: _integer_, minimum audio energy level to consider a beat. Default: 1000
+
+- `FRONTEND_BEAT_DETECTION_BASS_THRESHOLD`: _integer_, minimum bass frequency energy to consider a beat. Default: 300
+
+- `FRONTEND_BEAT_DETECTION_BEAT_COOLDOWN`: _integer_ (milliseconds), minimum time between detected beats. Default: 300
+
+- `FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD`: _number_ (0.0 to 1.0), minimum confidence level to trigger a beat. Default: 0.99
 
 ### Development
 
 To lint and format the codebase (excluding vendor files):
 
 ```bash
+cd frontend
 bun run check
 ```
 
-This will run `biome check --write .` which formats and lints only your source code, ignoring the `vhs/` vendor folder.
+This will run `biome check --write .` which formats and lints only your source code, ignoring the `public/` folder.
 
 ### Run
 
 ```bash
+cd frontend
 bun run dev
 ```
