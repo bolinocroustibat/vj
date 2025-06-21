@@ -95,7 +95,7 @@ jobs:
               git fetch
               git reset --hard origin/main
             else
-              git clone https://github.com/bolinocroustibat/vj-api.git .
+              git clone https://github.com/bolinocroustibat/vj.git .
             fi
 
             # Login to GitHub Container Registry

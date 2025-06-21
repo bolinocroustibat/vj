@@ -6,7 +6,7 @@ A Video Jockey (VJ) system consisting of a backend API that provides random YouT
 
 [**Frontend**](#frontend): A stylized random Video Jockey webapp playing randomly selected YouTube video clips with automatic smooth transitions between them. Features microphone-based beat detection for enhanced video switching control.
 
-This branch is using Django, Django Ninja and PostgreSQL. There is also a deprecated [branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj-api/tree/fastapi).
+This branch is using Django, Django Ninja and PostgreSQL. There is also a deprecated [branch using FastAPI and SQlite](https://github.com/bolinocroustibat/vj/tree/fastapi).
 
 ## API
 
