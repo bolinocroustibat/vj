@@ -2,8 +2,24 @@
 frontend/dist/* linguist-vendored
 frontend/node_modules/* linguist-vendored
 frontend/public/vhs/* linguist-vendored
+frontend/public/vhs/shader-doodle/* linguist-vendored
+frontend/public/vhs/shader-doodle/webgl/* linguist-vendored
+frontend/public/vhs/shader-doodle/utils/* linguist-vendored
+frontend/public/vhs/shader-doodle/inputs/* linguist-vendored
 *.min.js linguist-vendored
 *.bundle.js linguist-vendored
+*.chunk.js linguist-vendored
 
 # Mark Python as the main language
 *.py linguist-language=Python
+*.py linguist-detectable=true
+
+# Mark TypeScript as secondary
+*.ts linguist-language=TypeScript
+*.ts linguist-detectable=true
+
+# Mark JavaScript as vendored (third-party libraries)
+*.js linguist-vendored
+frontend/services/*.js linguist-detectable=true
+frontend/utils/*.js linguist-detectable=true
+frontend/types/*.js linguist-detectable=true
