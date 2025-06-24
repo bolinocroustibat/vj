@@ -1,0 +1,9 @@
+# Tell GitHub to ignore these files when determining repository language
+frontend/dist/* linguist-vendored
+frontend/node_modules/* linguist-vendored
+frontend/public/vhs/* linguist-vendored
+*.min.js linguist-vendored
+*.bundle.js linguist-vendored
+
+# Mark Python as the main language
+*.py linguist-language=Python
