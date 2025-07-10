@@ -87,8 +87,8 @@ jobs:
             set -e  # Exit on any error
 
             # Ensure directory exists
-            mkdir -p /home/www/vj-api
-            cd /home/www/vj-api
+            mkdir -p /home/www/vj
+            cd /home/www/vj
 
             # Clone or update the repository for configuration files
             if [ -d .git ]; then
