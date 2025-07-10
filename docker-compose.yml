@@ -14,6 +14,7 @@ services:
   api:
     container_name: vj-api
     image: ghcr.io/bolinocroustibat/vj-api:${TAG:-latest}
+    restart: unless-stopped
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -43,6 +44,7 @@ services:
   frontend:
     container_name: vj-frontend
     image: ghcr.io/bolinocroustibat/vj-frontend:${TAG:-latest}
+    restart: unless-stopped
     build:
       context: ./frontend
       dockerfile: Dockerfile
