@@ -8,7 +8,7 @@ def populate_db(videos: list[Video]) -> None:
     for v in videos:
         try:
             v.save()
-            logger.info(f'Saved a new video ID "{v.id}" in DB')
+            logger.info(f'Saved a new video ID "{v.pk}" in DB')
         except IntegrityError as e:
             logger.warning(f'Video "{v.youtube_id}" already in DB: {str(e)}')
         except Exception as e:

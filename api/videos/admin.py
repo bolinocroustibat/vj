@@ -35,29 +35,29 @@ class VideoAdmin(admin.ModelAdmin):
         "search_string",
     )
 
-    def get_theme_name(self, obj):
+    def get_theme_name(self, obj: Video) -> str | None:
         if obj.theme:
             return obj.theme.name
         return None
 
-    get_theme_name.short_description = "theme"
-    get_theme_name.admin_order_field = "theme__name"
+    get_theme_name.short_description = "theme"  # type: ignore[attr-defined]
+    get_theme_name.admin_order_field = "theme__name"  # type: ignore[attr-defined]
 
-    def get_url(self, obj):
+    def get_url(self, obj: Video) -> str:
         return f"https://www.youtube.com/watch?v={obj.youtube_id}"
 
-    get_url.short_description = "url"
+    get_url.short_description = "url"  # type: ignore[attr-defined]
 
-    def get_link_tag(self, obj):
+    def get_link_tag(self, obj: Video) -> str:
         return format_html(
             f"<a href='https://www.youtube.com/watch?v={obj.youtube_id}' target='_blank' />{obj.youtube_id}</a>"
         )
 
-    get_link_tag.short_description = "link"
+    get_link_tag.short_description = "link"  # type: ignore[attr-defined]
 
-    def get_image_tag(self, obj):
+    def get_image_tag(self, obj: Video) -> str | None:
         if obj.thumbnail:
             return format_html(f"<img src='{obj.thumbnail}' width='25%' />")
         return None
 
-    get_image_tag.short_description = "thumbnail"
+    get_image_tag.short_description = "thumbnail"  # type: ignore[attr-defined]
