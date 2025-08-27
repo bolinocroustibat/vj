@@ -5,10 +5,8 @@ from django.db import IntegrityError
 from django.http import Http404
 
 from videos.models import Theme, Video
-from vj_api.helpers import convert_youtube_duration_to_seconds
+from vj_api.helpers import convert_youtube_duration_to_seconds, get_random_word
 from vj_api.settings import YOUTUBE_API_KEY, logger
-
-from .dictionary import get_random_word
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_DOCS_URL = "https://www.googleapis.com/youtube/v3/videos"

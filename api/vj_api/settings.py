@@ -11,15 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import tomllib
+from pathlib import Path
 
 import colorlog
 import sentry_sdk
-import tomllib
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Environment settings
 ENVIRONMENT = os.getenv("ENVIRONMENT", "unknown")
@@ -134,7 +134,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # http://whitenoise.evans.io/en/stable/django.html
 # where the static files will go when doing a collectstatic if debug=false
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = str(Path(BASE_DIR) / "static")
 STATIC_URL = "/static/"
 
 
@@ -155,7 +155,7 @@ logger = colorlog.getLogger()
 logger.addHandler(handler)
 
 # Load version info from pyproject.toml
-with open("pyproject.toml", "rb") as f:
+with Path("pyproject.toml").open("rb") as f:
     pyproject: dict = tomllib.load(f)
 APP_NAME: str = pyproject["project"]["name"]
 DESCRIPTION: str = pyproject["project"]["description"]

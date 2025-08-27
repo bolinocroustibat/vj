@@ -7,7 +7,7 @@ from django.http import Http404
 from ninja import Router
 
 from videos.models import Theme, Video
-from vj_api.helpers import convert_youtube_duration_to_seconds, get_related_words
+from vj_api.helpers import convert_youtube_duration_to_seconds, get_random_word, get_related_words
 from vj_api.settings import YOUTUBE_API_KEY, logger
 
 router = Router(tags=["videos"])
@@ -226,13 +226,6 @@ def populate_db(videos: list[Video]) -> None:
             logger.warning(f'Video "{v.youtube_id}" already in DB: {str(e)}')
         except Exception as e:
             logger.error(f'Error saving video "{v.youtube_id}" in DB: {str(e)}')
-
-
-def get_random_word(lang: str | None = None) -> str:
-    if not lang:
-        lang: str = random.choice(list(DICTIONNARIES.keys()))
-    lines = open(DICTIONNARIES[lang]).read().splitlines()
-    return random.choice(lines)
 
 
 def get_channel_id(channel_name: str) -> str:

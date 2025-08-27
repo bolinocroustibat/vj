@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 
 DICTIONNARIES: dict = {
     "en": "vj_api/dictionaries/dict_EN.txt",
@@ -14,5 +15,6 @@ def get_random_word(lang: str | None = None) -> str:
     """
     if not lang:
         lang = random.choice(list(DICTIONNARIES.keys()))
-    lines = open(DICTIONNARIES[lang]).read().splitlines()
+    with Path(DICTIONNARIES[lang]).open() as f:
+        lines = f.read().splitlines()
     return random.choice(lines)

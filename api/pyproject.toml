@@ -27,7 +27,7 @@ homepage = "https://vj.adriencarpentier.com/api"
 
 [tool.ruff]
 line-length = 100
-lint = { extend-select = ["I"] }
+lint = { extend-select = ["ASYNC", "I", "PTH"] }
 
 [tool.uv]
 dev-dependencies = [
