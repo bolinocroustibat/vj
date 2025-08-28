@@ -138,16 +138,16 @@ wheels = [
 ]
 
 [[package]]
-name = "django-ninja"
-version = "1.4.3"
+name = "django-shinobi"
+version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cd/1a/f0d051f54375cfd2310f803925993fdc4172e41e627d63ece48194b07892/django_ninja-1.4.3.tar.gz", hash = "sha256:e46d477ca60c228d2a5eb3cc912094928ea830d364501f966661eeada67cb038", size = 3709571, upload-time = "2025-06-04T15:11:13.408Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/dc/c1/73fc6f2524ac424ff9514a4cae3774f3244e67cb5e606c9588cf77e12220/django_shinobi-1.4.0.tar.gz", hash = "sha256:8a9b10cf996e08120c8b399ac47e8bd4f99aa0d4516b90dd55676f71881e3e97", size = 3719280, upload-time = "2025-08-26T21:20:52.836Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/ec/0cfa9b817f048cdec354354ae0569d7c0fd63907e5b1f927a7ee04a18635/django_ninja-1.4.3-py3-none-any.whl", hash = "sha256:f3204137a059437b95677049474220611f1cf9efedba9213556474b75168fa01", size = 2426185, upload-time = "2025-06-04T15:11:11.314Z" },
+    { url = "https://files.pythonhosted.org/packages/80/83/9d5da51836be6258f0af32008bceb0abf57ae73bf50a4e2c152fc511e6b2/django_shinobi-1.4.0-py3-none-any.whl", hash = "sha256:844044763d2bacf9d5a30cf00070896fcdd9a44f07be390bcc3051ef67ea98f9", size = 2429465, upload-time = "2025-08-26T21:20:51.112Z" },
 ]
 
 [[package]]
@@ -604,7 +604,7 @@ dependencies = [
     { name = "colorlog" },
     { name = "django" },
     { name = "django-cors-headers" },
-    { name = "django-ninja" },
+    { name = "django-shinobi" },
     { name = "gunicorn" },
     { name = "langdetect" },
     { name = "nltk" },
@@ -626,7 +626,7 @@ requires-dist = [
     { name = "colorlog", specifier = ">=6.7.0" },
     { name = "django", specifier = ">=5.1" },
     { name = "django-cors-headers", specifier = ">=4.2.0" },
-    { name = "django-ninja", specifier = ">=0.22.2" },
+    { name = "django-shinobi", specifier = ">=1.4.0" },
     { name = "gunicorn", specifier = ">=21.2.0" },
     { name = "langdetect", specifier = ">=1.0.9" },
     { name = "nltk", specifier = ">=3.8" },
