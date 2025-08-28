@@ -13,7 +13,7 @@ repos:
     rev: v0.11.12
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix, --extend-select, ASYNC, I, PTH]
+        args: [--fix, --exit-non-zero-on-fix, --extend-select, ASYNC, --extend-select, I, --extend-exclude, PTH]
         files: ^api/
       - id: ruff-format
         files: ^api/

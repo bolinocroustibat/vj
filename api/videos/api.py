@@ -1,7 +1,7 @@
 import json
 import random
 
-import requests
+import httpx
 from django.db import IntegrityError
 from django.http import Http404
 from ninja import Router
@@ -97,7 +97,7 @@ def return_random_video_info(theme: Theme | None = None) -> dict:
 
 def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     youtube_ids: list = [v.youtube_id for v in videos if not v.duration][:49]
-    response_content = requests.get(
+    response_content = httpx.get(
         YOUTUBE_DOCS_URL,
         params={
             "key": YOUTUBE_API_KEY,
@@ -177,7 +177,7 @@ def get_videos_from_youtube(
         if next_page_token:
             params["pageToken"] = next_page_token
 
-        response_content = requests.get(
+        response_content = httpx.get(
             YOUTUBE_SEARCH_URL,
             params=params,
         ).content
@@ -232,7 +232,7 @@ def get_channel_id(channel_name: str) -> str:
     """
     Get YouTube channel ID from channel name/handle using YouTube API
     """
-    response_content = requests.get(
+    response_content = httpx.get(
         "https://www.googleapis.com/youtube/v3/search",
         params={
             "key": YOUTUBE_API_KEY,
