@@ -19,8 +19,11 @@ dependencies = [
     "uvicorn>=0.35.0",
 ]
 requires-python = ">=3.11,<3.14"
-dynamic = ["classifiers", "classifiers"]
 license = { text = "MIT" }
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = ["ruff>=0.11.12"]
 
 [project.urls]
 homepage = "https://vj.adriencarpentier.com/api"
@@ -28,8 +31,3 @@ homepage = "https://vj.adriencarpentier.com/api"
 [tool.ruff]
 line-length = 100
 lint = { extend-select = ["ASYNC", "I", "PTH"] }
-
-[tool.uv]
-dev-dependencies = [
-    "ruff>=0.11.12",
-]
