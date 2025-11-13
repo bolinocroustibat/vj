@@ -46,7 +46,7 @@ This will start both the Django application, PostgreSQL database, and the fronte
 - Persistent static files storage (`static_volume`)
 - Automatic database initialization and migrations
 - Frontend automatically configured to communicate with the backend API via Docker internal networking
-- PostgreSQL database accessible at `localhost:${DB_PORT}` (defaults to 5432) with:
+- PostgreSQL database accessible at `localhost:${POSTGRES_PORT}` (defaults to 5432) with:
   - Username: postgres (or value of POSTGRES_USER in .env)
   - Password: postgres (or value of POSTGRES_PASSWORD in .env)
   - Database: vj-api_django (or value of POSTGRES_DB in .env)
@@ -54,10 +54,10 @@ This will start both the Django application, PostgreSQL database, and the fronte
 To connect to the database:
 ```bash
 # Using psql command line:
-PGPASSWORD=postgres psql -h localhost -p ${DB_PORT:-5432} -U postgres -d vj-api_django
+PGPASSWORD=postgres psql -h localhost -p ${POSTGRES_PORT:-5432} -U postgres -d vj-api_django
 
 # Or using connection URL:
-postgresql://postgres:postgres@localhost:${DB_PORT:-5432}/vj-api_django
+postgresql://postgres:postgres@localhost:${POSTGRES_PORT:-5432}/vj-api_django
 ```
 
 To completely reset the database (WARNING: this will delete all data):
