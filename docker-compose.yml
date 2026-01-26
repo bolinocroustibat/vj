@@ -1,7 +1,7 @@
 services:
   db:
     container_name: vj-db
-    image: pgautoupgrade/pgautoupgrade:18-trixie
+    image: postgres:18
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql
