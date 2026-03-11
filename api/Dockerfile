@@ -1,7 +1,7 @@
-# Use official uv image with Python 3.13 with uv preinstalled
+# Use official uv image with Python 3.14 with uv preinstalled
 # (alpine is smaller, but longer to build and less compatible with setuptools-scm)
 # https://docs.astral.sh/uv/guides/integration/docker/
-FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
 
 # Python environment variables:
 # PYTHONDONTWRITEBYTECODE=1: Prevents Python from writing .pyc files (speeds up development and reduces container size)
