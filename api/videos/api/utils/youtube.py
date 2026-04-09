@@ -1,6 +1,6 @@
 import json
 
-import httpx
+import niquests
 from django.db import IntegrityError
 from django.http import Http404
 
@@ -42,7 +42,7 @@ def get_videos_from_youtube(
     if published_before:
         params["publishedBefore"] = published_before
 
-    response_content = httpx.get(
+    response_content = niquests.get(
         YOUTUBE_SEARCH_URL,
         params=params,
     ).content
@@ -76,7 +76,7 @@ def get_videos_from_youtube(
 
 def update_videos_view_count_from_youtube(videos: list[Video]) -> list[Video]:
     youtube_ids: list = [v.youtube_id for v in videos if not v.view_count][:49]
-    response_content = httpx.get(
+    response_content = niquests.get(
         YOUTUBE_DOCS_URL,
         params={
             "key": YOUTUBE_API_KEY,
@@ -116,7 +116,7 @@ def update_videos_view_count_from_youtube(videos: list[Video]) -> list[Video]:
 
 def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     youtube_ids: list = [v.youtube_id for v in videos if not v.duration][:49]
-    response_content = httpx.get(
+    response_content = niquests.get(
         YOUTUBE_DOCS_URL,
         params={
             "key": YOUTUBE_API_KEY,
@@ -160,7 +160,7 @@ def get_channel_id(channel_name: str) -> str:
     """
     Get YouTube channel ID from channel name/handle using YouTube API
     """
-    response_content = httpx.get(
+    response_content = niquests.get(
         "https://www.googleapis.com/youtube/v3/search",
         params={
             "key": YOUTUBE_API_KEY,
