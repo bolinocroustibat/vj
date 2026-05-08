@@ -5,7 +5,7 @@ description = "Provides a random YouTube video ID according to an optional given
 authors = [{ name = "Adrien Carpentier", email = "me@adriencarpentier.com" }]
 dependencies = [
     "colorlog>=6.9.0",
-    "django>=5.2.6",
+    "django>=5.2.14",
     "django-cors-headers>=4.8.0",
     "django-shinobi>=1.4.2",
     "gunicorn>=23.0.0",
