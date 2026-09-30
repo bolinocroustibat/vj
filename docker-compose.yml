@@ -11,6 +11,10 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    ulimits:
+      core:
+        soft: 0
+        hard: 0
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 10s
@@ -31,6 +35,10 @@ services:
       - static_volume:/app/static
     ports:
       - "${API_PORT:-8000}:8000"
+    ulimits:
+      core:
+        soft: 0
+        hard: 0
     environment:
       # Application settings
       - ENVIRONMENT=${ENVIRONMENT:-unknown}
@@ -80,6 +88,10 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    ulimits:
+      core:
+        soft: 0
+        hard: 0
     healthcheck:
       test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/4173' || exit 1"]
       interval: 30s

@@ -7,7 +7,8 @@ FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
 # PYTHONDONTWRITEBYTECODE=1: Prevents Python from writing .pyc files (speeds up development and reduces container size)
 # PYTHONUNBUFFERED=1: Prevents Python from buffering stdout/stderr (ensures log messages are output immediately)
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    UV_NO_DEV=1
 
 # Copy the project into the image
 ADD . /app
