@@ -1,7 +1,4 @@
-import {
-	OVERLAY_EFFECTS,
-	type OverlayEffect,
-} from "../types/config.js"
+import { OVERLAY_EFFECTS, type OverlayEffect } from "../types/config.js"
 
 const EFFECT_LABELS: Record<OverlayEffect, string> = {
 	vhs: "VHS",
@@ -100,9 +97,9 @@ export function waitForStart(): Promise<StartChoices> {
 		button.addEventListener(
 			"click",
 			() => {
-				const overlayEffect = (
-					OVERLAY_EFFECTS as readonly string[]
-				).includes(effectSelect.value)
+				const overlayEffect = (OVERLAY_EFFECTS as readonly string[]).includes(
+					effectSelect.value,
+				)
 					? (effectSelect.value as OverlayEffect)
 					: DEFAULT_CHOICES.overlayEffect
 

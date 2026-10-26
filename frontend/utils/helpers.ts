@@ -1,7 +1,7 @@
 import type { Config } from "../types/config.js"
 
 export function logConfig(config: Config): void {
-	console.log(`Change period: ${config.changePeriod}`)
+	console.log(`New video request delay: ${config.newVideoRequestDelay}`)
 	console.log(`Themes: ${config.youtubeThemes.map(String)}`)
 	console.log(`API host: ${config.apiHost}`)
 }

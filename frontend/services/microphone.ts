@@ -6,7 +6,7 @@ export class MicrophoneManager {
 	private audioContext: AudioContext | null = null
 	private analyser: AnalyserNode | null = null
 	private microphone: MediaStreamAudioSourceNode | null = null
-	private dataArray: Uint8Array | null = null
+	private dataArray: Uint8Array<ArrayBuffer> | null = null
 	private isListening = false
 	private animationId: number | null = null
 	private onAudioDataCallback: ((metrics: AudioMetrics) => void) | null = null
@@ -50,7 +50,9 @@ export class MicrophoneManager {
 		this.analyser.smoothingTimeConstant = 0.8
 
 		this.microphone.connect(this.analyser)
-		this.dataArray = new Uint8Array(this.analyser.frequencyBinCount)
+		this.dataArray = new Uint8Array(
+			new ArrayBuffer(this.analyser.frequencyBinCount),
+		)
 
 		debugLog("🎵 Audio analysis setup complete", this.config)
 		debugLog(

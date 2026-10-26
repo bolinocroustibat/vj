@@ -16,7 +16,6 @@ export class YouTubePlayerManager {
 	private config: Config | null = null
 	private playerLoaded: Set<number> = new Set() // Track which players have loaded videos
 	private playerThemes: Map<number, string> = new Map() // Track theme for each player
-	private onBeatSwitchCallback: (() => void) | null = null
 
 	constructor(config: Config) {
 		this.config = config
@@ -294,11 +293,6 @@ export class YouTubePlayerManager {
 		}
 
 		overlay.textContent = `Player ${this.currentDisplayPlayer} - Theme: ${this.playerThemes.get(this.currentDisplayPlayer) || "Unknown"}`
-	}
-
-	// Add method to trigger beat-based switching
-	onBeatSwitch(callback: () => void): void {
-		this.onBeatSwitchCallback = callback
 	}
 
 	// Method to trigger immediate switch on beat

@@ -1,5 +1,22 @@
 // YouTube API type definitions
 declare global {
+	namespace YT {
+		interface Player {
+			id: number
+			loadVideoById: (videoId: string, startSeconds: number) => void
+			setPlaybackRate: (rate: number) => void
+		}
+
+		interface PlayerEvent {
+			target: Player
+		}
+
+		interface OnStateChangeEvent {
+			target: Player
+			data: number
+		}
+	}
+
 	interface Window {
 		YT: {
 			Player: new (
@@ -17,23 +34,6 @@ declare global {
 				},
 			) => YT.Player
 		}
-	}
-}
-
-declare namespace YT {
-	interface Player {
-		id: number
-		loadVideoById: (videoId: string, startSeconds: number) => void
-		setPlaybackRate: (rate: number) => void
-	}
-
-	interface PlayerEvent {
-		target: Player
-	}
-
-	interface OnStateChangeEvent {
-		target: Player
-		data: number
 	}
 }
 

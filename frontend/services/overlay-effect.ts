@@ -13,39 +13,38 @@ const VHS_TEXTURES = `
 					<sd-texture src="/vhs/noise.png" name="noise"></sd-texture>
 					<sd-texture src="/vhs/white.png" name="white"></sd-texture>`
 
-const OVERLAY_SHADERS: Record<Exclude<OverlayEffect, "none">, OverlayShader> =
-	{
-		vhs: {
-			src: "/vhs/vhs.js",
-			className: "overlay-vhs",
-			textures: VHS_TEXTURES,
-		},
-		grain: {
-			src: "/effects/grain.js",
-			className: "",
-			textures: "",
-		},
-		crt: {
-			src: "/effects/crt.js",
-			className: "",
-			textures: "",
-		},
-		scratches: {
-			src: "/effects/scratches.js",
-			className: "",
-			textures: "",
-		},
-		leaks: {
-			src: "/effects/leaks.js",
-			className: "",
-			textures: "",
-		},
-		glitch: {
-			src: "/effects/glitch.js",
-			className: "",
-			textures: "",
-		},
-	}
+const OVERLAY_SHADERS: Record<Exclude<OverlayEffect, "none">, OverlayShader> = {
+	vhs: {
+		src: "/vhs/vhs.js",
+		className: "overlay-vhs",
+		textures: VHS_TEXTURES,
+	},
+	grain: {
+		src: "/effects/grain.js",
+		className: "",
+		textures: "",
+	},
+	crt: {
+		src: "/effects/crt.js",
+		className: "",
+		textures: "",
+	},
+	scratches: {
+		src: "/effects/scratches.js",
+		className: "",
+		textures: "",
+	},
+	leaks: {
+		src: "/effects/leaks.js",
+		className: "",
+		textures: "",
+	},
+	glitch: {
+		src: "/effects/glitch.js",
+		className: "",
+		textures: "",
+	},
+}
 
 /**
  * Draw the chosen full-screen overlay.
