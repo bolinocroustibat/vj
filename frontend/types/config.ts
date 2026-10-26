@@ -1,3 +1,15 @@
+export const OVERLAY_EFFECTS = [
+	"vhs",
+	"grain",
+	"crt",
+	"scratches",
+	"leaks",
+	"glitch",
+	"none",
+] as const
+
+export type OverlayEffect = (typeof OVERLAY_EFFECTS)[number]
+
 // Configuration interfaces
 export interface Config {
 	newVideoRequestDelay: number
@@ -47,11 +59,10 @@ export interface Config {
 		confidenceThreshold: number
 	}
 	/**
-	 * Enable VHS visual effects overlay
-	 * When true, applies retro VHS-style visual effects to the video
-	 * When false, videos play without any visual effects
+	 * Full-screen overlay drawn on top of the videos.
+	 * The YouTube players are iframes, so this cannot read the picture itself.
 	 */
-	vhsEffect?: boolean
+	overlayEffect: OverlayEffect
 	/**
 	 * Enable grayscale filter on videos
 	 * When true, videos are displayed in black and white

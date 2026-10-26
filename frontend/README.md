@@ -27,7 +27,7 @@ Copy `config.example.json` to `config.json` and modify the settings as needed.
 
 - **Three-Player System**: Uses three YouTube players to ensure smooth transitions with one player always loading the next video
 - **Beat Detection**: Microphone-based audio analysis to detect beats in real-time
-- **VHS Effects**: Shader-based visual effects for a retro aesthetic
+- **Overlays**: Shader-based looks drawn on top of the videos (VHS, grain, CRT, scratches, light leaks, or glitch bars)
 - **Automatic Transitions**: Seamless switching between videos when they finish loading
 - **Theme-Based Selection**: Request videos based on specific themes or completely random selection
 

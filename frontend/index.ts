@@ -1,5 +1,5 @@
 import { BeatDetector } from "./services/beat-detector.js"
-import { loadVHSEffects } from "./services/vhs-effects.js"
+import { loadOverlayEffect } from "./services/overlay-effect.js"
 import { YouTubePlayerManager } from "./services/youtube-player.js"
 import type { Config } from "./types/config.js"
 import { loadConfig } from "./utils/config.js"
@@ -40,8 +40,7 @@ async function initializeApp(): Promise<void> {
 		return
 	}
 
-	// Load VHS effects if enabled
-	await loadVHSEffects(config)
+	await loadOverlayEffect(config)
 
 	// Apply grayscale filter based on config
 	applyGrayscale(config)

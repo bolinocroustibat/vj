@@ -173,7 +173,7 @@ The frontend is configured through environment variables that are passed to the 
 
 - `FRONTEND_DEBUG`: _boolean_, enables debug overlay and additional console logging. Default: false
 
-- `FRONTEND_VHS_EFFECT`: _boolean_, enables VHS visual effects overlay. Default: true
+- `FRONTEND_OVERLAY_EFFECT`: _string_, full-screen overlay drawn on top of the videos. One of `vhs`, `grain`, `crt`, `scratches`, `leaks`, `glitch`, or `none`. Default: vhs
 
 - `FRONTEND_GRAYSCALE`: _boolean_, enables grayscale filter on videos. Default: true
 
