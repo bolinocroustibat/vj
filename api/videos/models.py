@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Theme(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
 
