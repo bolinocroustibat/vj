@@ -1,6 +1,6 @@
 {
 	"files": {
-		"ignore": ["public/**", "dist/**"]
+		"includes": ["**", "!**/public", "!**/dist"]
 	},
 	"javascript": {
 		"formatter": {
