@@ -30,6 +30,23 @@ export class YouTubePlayerManager {
 		firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
 	}
 
+	/** Apply start-screen choices after players may already be loading. */
+	applyStartChoices(config: Config): void {
+		this.config = config
+		const rate = config.youtubePlaybackRate || 0.25
+		for (const id of [1, 2, 3] as const) {
+			try {
+				this.getPlayer(id).setPlaybackRate(rate)
+			} catch {
+				// Player not created yet; rate will be set in startVideo
+			}
+		}
+	}
+
+	hasLoadedVideos(): boolean {
+		return this.playerLoaded.size > 0
+	}
+
 	initializePlayers(): void {
 		this.player1 = new window.YT.Player("player1", {
 			playerVars: { autoplay: 1, controls: 0, mute: 1 },
