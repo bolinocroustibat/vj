@@ -163,6 +163,8 @@ A stylized random Video Jockey webapp playing randomly selected YouTube video cl
 
 The frontend is configured through environment variables that are passed to the Docker container. These can be set in your `.env` file or directly in the `docker-compose.yml` file.
 
+Overlay effect, grayscale, and playback rate are chosen in the browser on the start screen before playback (no env vars).
+
 #### Configuration Options
 
 - `FRONTEND_NEW_VIDEO_REQUEST_DELAY`: _integer_ (seconds), how often to request new videos from the API. The actual video switching happens automatically when videos finish loading. Default: 8
@@ -172,12 +174,6 @@ The frontend is configured through environment variables that are passed to the 
 - `FRONTEND_YOUTUBE_THEMES`: _string_ (comma-separated), themes of the requested videos. Leave empty for completely randomly selected videos. Default: ""
 
 - `FRONTEND_DEBUG`: _boolean_, enables debug overlay and additional console logging. Default: false
-
-- `FRONTEND_OVERLAY_EFFECT`: _string_, full-screen overlay drawn on top of the videos. One of `vhs`, `grain`, `crt`, `scratches`, `leaks`, `glitch`, or `none`. Default: vhs
-
-- `FRONTEND_GRAYSCALE`: _boolean_, enables grayscale filter on videos. Default: true
-
-- `FRONTEND_YOUTUBE_PLAYBACK_RATE`: _number_, playback rate for YouTube videos. Default: 1
 
 - `FRONTEND_BEAT_DETECTION_ENERGY_THRESHOLD`: _integer_, minimum audio energy level to consider a beat. Default: 1000
 

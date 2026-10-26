@@ -187,10 +187,9 @@ export class YouTubePlayerManager {
 				this.config,
 			)
 
-			// Hide countdown if it's still showing
 			const countdownElement = document.getElementById("countdown")
 			if (countdownElement) {
-				countdownElement.style.display = "None"
+				countdownElement.hidden = true
 			}
 
 			// Wait a bit for YouTube title overlay to disappear before switching

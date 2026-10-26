@@ -58,17 +58,11 @@ export interface Config {
 		 */
 		confidenceThreshold: number
 	}
-	/**
-	 * Full-screen overlay drawn on top of the videos.
-	 * The YouTube players are iframes, so this cannot read the picture itself.
-	 */
+	/** Chosen on the start screen before playback */
 	overlayEffect: OverlayEffect
-	/**
-	 * Enable grayscale filter on videos
-	 * When true, videos are displayed in black and white
-	 * When false, videos are displayed in full color
-	 */
-	grayscale?: boolean
+	/** Chosen on the start screen before playback */
+	grayscale: boolean
+	/** Chosen on the start screen before playback */
 	youtubePlaybackRate: number
 }
 

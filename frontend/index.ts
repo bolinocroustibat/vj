@@ -1,5 +1,6 @@
 import { BeatDetector } from "./services/beat-detector.js"
 import { loadOverlayEffect } from "./services/overlay-effect.js"
+import { waitForStart } from "./services/start-screen.js"
 import { YouTubePlayerManager } from "./services/youtube-player.js"
 import type { Config } from "./types/config.js"
 import { loadConfig } from "./utils/config.js"
@@ -40,12 +41,19 @@ async function initializeApp(): Promise<void> {
 		return
 	}
 
+	const choices = await waitForStart()
+	config.overlayEffect = choices.overlayEffect
+	config.grayscale = choices.grayscale
+	config.youtubePlaybackRate = choices.youtubePlaybackRate
+
+	applyGrayscale(config)
 	await loadOverlayEffect(config)
 
-	// Apply grayscale filter based on config
-	applyGrayscale(config)
+	const countdown = document.getElementById("countdown")
+	if (countdown) {
+		countdown.hidden = false
+	}
 
-	// Initialize YouTube player manager
 	youtubeManager = new YouTubePlayerManager(config)
 
 	// Initialize beat detector with main config

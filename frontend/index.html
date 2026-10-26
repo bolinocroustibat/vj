@@ -14,7 +14,23 @@
 
 <body>
 
-	<img id="countdown" src="/countdown_10s.gif">
+	<div id="start-screen">
+		<div class="start-field">
+			<label for="overlay-effect-select">Overlay effect</label>
+			<select id="overlay-effect-select"></select>
+		</div>
+		<div class="start-field">
+			<label for="grayscale-select">Grayscale</label>
+			<select id="grayscale-select"></select>
+		</div>
+		<div class="start-field">
+			<label for="playback-rate-select">Playback rate</label>
+			<select id="playback-rate-select"></select>
+		</div>
+		<button type="button" id="start-button">Start</button>
+	</div>
+
+	<img id="countdown" src="/countdown_10s.gif" hidden>
 
 	<div id="player1"></div>
 	<div id="player2"></div>
