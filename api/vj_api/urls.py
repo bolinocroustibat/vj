@@ -17,12 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
+from ninja.throttling import AnonRateThrottle
 
 from videos.api import router as videos_router
 from vj_api.helpers import ORJSONRenderer
-from vj_api.settings import APP_NAME, DESCRIPTION, VERSION
+from vj_api.settings import API_RATE_LIMIT, APP_NAME, DESCRIPTION, VERSION
 
-api = NinjaAPI(renderer=ORJSONRenderer(), title=APP_NAME, description=DESCRIPTION, version=VERSION)
+api = NinjaAPI(
+    renderer=ORJSONRenderer(),
+    title=APP_NAME,
+    description=DESCRIPTION,
+    version=VERSION,
+    throttle=AnonRateThrottle(API_RATE_LIMIT),
+)
 api.add_router("/videos/", videos_router)
 
 urlpatterns = [

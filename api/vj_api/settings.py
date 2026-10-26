@@ -56,6 +56,12 @@ DATABASES = {
 # Nginx proxy settings - to make Django trusts the https from the Nginx proxy
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+# Rate limiting settings
+# API_RATE_LIMIT: max requests per client IP, as "<number>/<s|m|h|d>"
+API_RATE_LIMIT = os.getenv("API_RATE_LIMIT", "20/m")
+# Number of reverse proxies in front of the API, used to read the client IP from X-Forwarded-For
+NINJA_NUM_PROXIES = int(os.getenv("NUM_PROXIES", "1"))
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
