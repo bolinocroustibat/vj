@@ -10,6 +10,8 @@ from vj_api.settings import YOUTUBE_API_KEY, logger
 
 YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_DOCS_URL = "https://www.googleapis.com/youtube/v3/videos"
+# (connect, read) timeouts in seconds for YouTube API calls
+YOUTUBE_API_TIMEOUT = (3, 10)
 
 
 def get_videos_from_youtube(
@@ -42,10 +44,15 @@ def get_videos_from_youtube(
     if published_before:
         params["publishedBefore"] = published_before
 
-    response_content = niquests.get(
-        YOUTUBE_SEARCH_URL,
-        params=params,
-    ).content
+    try:
+        response_content = niquests.get(
+            YOUTUBE_SEARCH_URL,
+            params=params,
+            timeout=YOUTUBE_API_TIMEOUT,
+        ).content
+    except niquests.RequestException as e:
+        logger.error(f"Error calling YouTube search API: {str(e)}")
+        return None
 
     content: dict = json.loads(response_content)
     if content.get("error", None):
@@ -76,14 +83,19 @@ def get_videos_from_youtube(
 
 def update_videos_view_count_from_youtube(videos: list[Video]) -> list[Video]:
     youtube_ids: list = [v.youtube_id for v in videos if not v.view_count][:49]
-    response_content = niquests.get(
-        YOUTUBE_DOCS_URL,
-        params={
-            "key": YOUTUBE_API_KEY,
-            "part": "statistics",
-            "id": ",".join(youtube_ids),
-        },
-    ).content
+    try:
+        response_content = niquests.get(
+            YOUTUBE_DOCS_URL,
+            params={
+                "key": YOUTUBE_API_KEY,
+                "part": "statistics",
+                "id": ",".join(youtube_ids),
+            },
+            timeout=YOUTUBE_API_TIMEOUT,
+        ).content
+    except niquests.RequestException as e:
+        logger.error(f"Error calling YouTube videos API: {str(e)}")
+        return videos
 
     content: dict = json.loads(response_content)
     if content.get("error", None):
@@ -116,15 +128,20 @@ def update_videos_view_count_from_youtube(videos: list[Video]) -> list[Video]:
 
 def update_videos_duration_from_youtube(videos: list[Video]) -> list[Video]:
     youtube_ids: list = [v.youtube_id for v in videos if not v.duration][:49]
-    response_content = niquests.get(
-        YOUTUBE_DOCS_URL,
-        params={
-            "key": YOUTUBE_API_KEY,
-            "part": "contentDetails",
-            "type": "video",
-            "id": ",".join(youtube_ids),
-        },
-    ).content
+    try:
+        response_content = niquests.get(
+            YOUTUBE_DOCS_URL,
+            params={
+                "key": YOUTUBE_API_KEY,
+                "part": "contentDetails",
+                "type": "video",
+                "id": ",".join(youtube_ids),
+            },
+            timeout=YOUTUBE_API_TIMEOUT,
+        ).content
+    except niquests.RequestException as e:
+        logger.error(f"Error calling YouTube videos API: {str(e)}")
+        return videos
 
     content: dict = json.loads(response_content)
     if content.get("error", None):
@@ -160,16 +177,21 @@ def get_channel_id(channel_name: str) -> str:
     """
     Get YouTube channel ID from channel name/handle using YouTube API
     """
-    response_content = niquests.get(
-        "https://www.googleapis.com/youtube/v3/search",
-        params={
-            "key": YOUTUBE_API_KEY,
-            "part": "snippet",
-            "type": "channel",
-            "q": channel_name,
-            "maxResults": 1,
-        },
-    ).content
+    try:
+        response_content = niquests.get(
+            "https://www.googleapis.com/youtube/v3/search",
+            params={
+                "key": YOUTUBE_API_KEY,
+                "part": "snippet",
+                "type": "channel",
+                "q": channel_name,
+                "maxResults": 1,
+            },
+            timeout=YOUTUBE_API_TIMEOUT,
+        ).content
+    except niquests.RequestException as e:
+        logger.error(f"Error getting channel ID: {str(e)}")
+        raise Http404("Channel not found") from e
 
     content: dict = json.loads(response_content)
     if content.get("error", None):
