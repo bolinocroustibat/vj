@@ -1,5 +1,5 @@
 # Use the official Bun image
-FROM oven/bun:latest
+FROM oven/bun:latest AS build
 
 # Set working directory
 WORKDIR /app
@@ -34,8 +34,7 @@ RUN VITE_DEBUG=${DEBUG} \
     VITE_BEAT_DETECTION_CONFIDENCE_THRESHOLD=${FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD} \
     bun run build
 
-# Expose port 4173 (Vite preview default)
-EXPOSE 4173
-
-# Serve the built application
-CMD ["bun", "run", "preview", "--host", "0.0.0.0"]
+# Serve the static build with a minimal web server
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
