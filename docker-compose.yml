@@ -34,7 +34,7 @@ services:
     volumes:
       - static_volume:/app/static
     ports:
-      - "${API_PORT:-8000}:8000"
+      - "127.0.0.1:${API_PORT:-8000}:8000"
     ulimits:
       core:
         soft: 0
@@ -85,7 +85,7 @@ services:
         FRONTEND_BEAT_DETECTION_BEAT_COOLDOWN: ${FRONTEND_BEAT_DETECTION_BEAT_COOLDOWN:-300}
         FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD: ${FRONTEND_BEAT_DETECTION_CONFIDENCE_THRESHOLD:-0.99}
     ports:
-      - "${FRONTEND_PORT:-4173}:80"
+      - "127.0.0.1:${FRONTEND_PORT:-4173}:80"
     depends_on:
       api:
         condition: service_healthy
